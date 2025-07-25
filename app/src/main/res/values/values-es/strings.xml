@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SegNmea</string>
+    <string name="lat">Lat</string>
+    <string name="lon">Lon</string>
+    <string name="speed">Veloc.</string>
+    <string name="heading">Rumbo</string>
+    <string name="pitch">Inclinacion</string>
+    <string name="roll">Balanceo</string>
+    <string name="compass">Compás</string>
+    <string name="clinometer">Clinómetro</string>
+    <string name="data">Datos</string>
+    <string name="principal">Principal</string>
+    <string name="settings">Configuración</string>
+    <string name="about">Acerca de</string>
+    <string name="about_text">Programa diseñado por: Hdelacruz</string>
+    <string name="channel_id">ID del canal de ThingSpeak</string>
+    <string name="pitch_alarm_threshold">Umbral de alarma de inclinación</string>
+    <string name="roll_alarm_threshold">Umbral de alarma de balanceo</string>
+    <string name="save">Guardar</string>
+</resources>

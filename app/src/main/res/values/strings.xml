@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SegNmea</string>
+    <string name="lat">Lat</string>
+    <string name="lon">Lon</string>
+    <string name="speed">Speed</string>
+    <string name="heading">Heading</string>
+    <string name="pitch">Pitch</string>
+    <string name="roll">Roll</string>
+    <string name="compass">Compass</string>
+    <string name="clinometer">Clinometer</string>
+    <string name="data">Data</string>
+    <string name="principal">Principal</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="about_text">Programa diseñado por: Hdelacruz</string>
+    <string name="channel_id">ThingSpeak Channel ID</string>
+    <string name="pitch_alarm_threshold">Pitch Alarm Threshold</string>
+    <string name="roll_alarm_threshold">Roll Alarm Threshold</string>
+    <string name="save">Save</string>
+</resources>
