@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,18 +38,23 @@ public final class ActivityCompassBinding implements ViewBinding {
   public final TextView headingValueTextView;
 
   @NonNull
+  public final LinearLayout linearLayout;
+
+  @NonNull
   public final Button mainButton;
 
   private ActivityCompassBinding(@NonNull ConstraintLayout rootView,
       @NonNull TextView channelNameTextView, @NonNull Button clinometerButton,
       @NonNull ImageView compassRose, @NonNull Button dataButton,
-      @NonNull TextView headingValueTextView, @NonNull Button mainButton) {
+      @NonNull TextView headingValueTextView, @NonNull LinearLayout linearLayout,
+      @NonNull Button mainButton) {
     this.rootView = rootView;
     this.channelNameTextView = channelNameTextView;
     this.clinometerButton = clinometerButton;
     this.compassRose = compassRose;
     this.dataButton = dataButton;
     this.headingValueTextView = headingValueTextView;
+    this.linearLayout = linearLayout;
     this.mainButton = mainButton;
   }
 
@@ -109,6 +115,12 @@ public final class ActivityCompassBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.linearLayout;
+      LinearLayout linearLayout = ViewBindings.findChildViewById(rootView, id);
+      if (linearLayout == null) {
+        break missingId;
+      }
+
       id = R.id.mainButton;
       Button mainButton = ViewBindings.findChildViewById(rootView, id);
       if (mainButton == null) {
@@ -116,7 +128,8 @@ public final class ActivityCompassBinding implements ViewBinding {
       }
 
       return new ActivityCompassBinding((ConstraintLayout) rootView, channelNameTextView,
-          clinometerButton, compassRose, dataButton, headingValueTextView, mainButton);
+          clinometerButton, compassRose, dataButton, headingValueTextView, linearLayout,
+          mainButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

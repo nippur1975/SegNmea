@@ -1,78 +1,130 @@
 [
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_port_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/port_alarm.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_green_triangle.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/green_triangle.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_head_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/head_alarm.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rose.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compass_rose.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/drawable_pitch.png.flat",
-        "source": "com.example.segnmea.app-main-19:/drawable/pitch.png"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compas2.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compas2.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/drawable_ic_boat_marker.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/drawable/ic_boat_marker.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rose1.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compass_rose1.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_stern_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/stern_alarm.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_sentado.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/alarma_sentado.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/layout_activity_data.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/layout/activity_data.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_barco.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/barco.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/layout_activity_settings.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/layout/activity_settings.xml"
+        "merged": "com.example.segnmea.app-debug-35:/raw_port_alarm.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/port_alarm.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_alarma_babor.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/alarma_babor.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_blue_dot.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/blue_dot.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/drawable_compass_rose.png.flat",
-        "source": "com.example.segnmea.app-main-19:/drawable/compass_rose.png"
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_main.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_alarma_estribor.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/alarma_estribor.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_encabuzado.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/alarma_encabuzado.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/layout_activity_clinometer.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/layout/activity_clinometer.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_roll.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/roll.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_alarma_encabuzado.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/alarma_encabuzado.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_alarm.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_alarm.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/layout_activity_main.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/layout/activity_main.xml"
+        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_babor.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/alarma_babor.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/drawable_barco.png.flat",
-        "source": "com.example.segnmea.app-main-19:/drawable/barco.png"
+        "merged": "com.example.segnmea.app-debug-35:/menu_main_menu.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/menu/main_menu.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/drawable_roll.png.flat",
-        "source": "com.example.segnmea.app-main-19:/drawable/roll.png"
+        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_estribor.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/alarma_estribor.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/menu_main_menu.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/menu/main_menu.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_blue_triangle.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/blue_triangle.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_alarma_sentado.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/alarma_sentado.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/raw_head_alarm.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/head_alarm.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/raw_starboard_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-19:/raw/starboard_alarm.mp3"
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_compass.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_compass.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-17:/layout_activity_compass.xml.flat",
-        "source": "com.example.segnmea.app-main-19:/layout/activity_compass.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compas3.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compas3.png"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_clinometer.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_clinometer.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_custom_info_window.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/custom_info_window.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/raw_starboard_alarm.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/starboard_alarm.mp3"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_channel.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_channel.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_red_triangle.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/red_triangle.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/raw_stern_alarm.mp3.flat",
+        "source": "com.example.segnmea.app-main-37:/raw/stern_alarm.mp3"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_pitch.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/pitch.png"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_data.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_data.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_yellow_triangle.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/yellow_triangle.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_about.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_about.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_settings.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/layout_activity_language.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/layout/activity_language.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_boat_marker.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/ic_boat_marker.xml"
     }
 ]

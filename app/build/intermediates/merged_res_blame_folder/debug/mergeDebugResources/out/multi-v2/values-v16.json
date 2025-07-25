@@ -1,20 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.segnmea.app-mergeDebugResources-15:/values-v16/values-v16.xml",
+            "outputFile": "com.example.segnmea.app-mergeDebugResources-33:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\hdelacruz\\.gradle\\caches\\8.13\\transforms\\d1fbcfefbf17e016cabf4f3bdfe3e877\\transformed\\core-1.5.0\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\hdelacruz\\.gradle\\caches\\8.13\\transforms\\884c7eca5707c071c7950e89fe3d1e2d\\transformed\\appcompat-1.2.0\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\hdelacruz\\.gradle\\caches\\8.13\\transforms\\2076715f6685aa13381495d27d792588\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -22,14 +12,6 @@
                         "endLines": "5",
                         "endColumns": "12",
                         "endOffsets": "223"
-                    },
-                    "to": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "121",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "289"
                     }
                 }
             ]

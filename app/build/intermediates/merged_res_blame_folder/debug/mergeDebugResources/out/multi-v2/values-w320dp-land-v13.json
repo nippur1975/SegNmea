@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.segnmea.app-mergeDebugResources-15:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "outputFile": "com.example.segnmea.app-mergeDebugResources-33:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\hdelacruz\\.gradle\\caches\\8.13\\transforms\\aec9987bf895ab534870653609a430d2\\transformed\\material-1.4.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+                    "source": "C:\\Users\\hdelacruz\\.gradle\\caches\\8.13\\transforms\\803b89e066c2e0a990739292cbee0768\\transformed\\material-1.12.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

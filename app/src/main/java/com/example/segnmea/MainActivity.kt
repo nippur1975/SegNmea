@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.clustering.ClusterManager
 import org.json.JSONObject
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -33,9 +35,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
     private val trackPoints = mutableListOf<LatLng>()
+    private var currentZoom = 15f
+    private var currentMarker: Marker? = null
+    private lateinit var clusterManager: ClusterManager<MyClusterItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val language = sharedPreferences.getString("language", "en")
+        setLocale(language!!)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = getString(R.string.app_name)
@@ -53,13 +61,61 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
         }
+
+        binding.channelButton.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+            val channels = arrayOf(
+                sharedPreferences.getString("channel1", "3002133")!!,
+                sharedPreferences.getString("channel2", "3007462")!!,
+                sharedPreferences.getString("channel3", "3017966")!!,
+                sharedPreferences.getString("channel4", "3017982")!!
+            )
+            var checkedItem = 0
+            when (channel) {
+                channels[0] -> checkedItem = 0
+                channels[1] -> checkedItem = 1
+                channels[2] -> checkedItem = 2
+                channels[3] -> checkedItem = 3
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("Select Active Channel")
+                .setSingleChoiceItems(channels, checkedItem) { _, which ->
+                    val editor = sharedPreferences.edit()
+                    editor.putString("channel", channels[which])
+                    editor.apply()
+                    fetchData()
+                }
+                .setPositiveButton("OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setOnCameraIdleListener {
-            fetchData()
+        mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
+        mMap.uiSettings.isZoomControlsEnabled = true
+
+        clusterManager = ClusterManager(this, mMap)
+        mMap.setOnCameraIdleListener(clusterManager)
+        mMap.setOnMarkerClickListener(clusterManager)
+
+        binding.compassButton.post {
+            val buttonContainerHeight = binding.compassButton.height
+            mMap.setPadding(0, 0, 0, buttonContainerHeight)
         }
+
+        binding.trackSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                fetchAllChannelsData()
+            } else {
+                clusterManager.clearItems()
+                clusterManager.cluster()
+            }
+        }
+
         fetchData()
     }
 
@@ -74,6 +130,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
+            R.id.action_about -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.about)
+                    .setMessage("Programa de seguimiento barco - desarrollado por Hdelacruz")
+                    .setPositiveButton("Cerrar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -81,64 +147,95 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
-        val queue = Volley.newRequestQueue(this)
-        val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
-
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                val jsonObject = JSONObject(response)
-                val feeds = jsonObject.getJSONArray("feeds")
-                if (feeds.length() > 0) {
-                    val lastFeed = feeds.getJSONObject(0)
-                    val lat = lastFeed.getString("field3").toDouble()
-                    val lon = lastFeed.getString("field4").toDouble()
-                    val speed = lastFeed.getString("field5")
-                    val heading = lastFeed.getString("field6").toFloat()
-                    val pitch = lastFeed.getString("field1")
-                    val roll = lastFeed.getString("field2")
-
-                    binding.latTextView.text = "Lat: $lat"
-                    binding.lonTextView.text = "Lon: $lon"
-                    binding.speedTextView.text = "Speed: $speed Kn"
-                    binding.headingTextView.text = "Heading: ${heading.toInt()}°"
-                    binding.pitchTextView.text = "Pitch: $pitch°"
-                    binding.rollTextView.text = "Roll: $roll°"
-
-                    val position = LatLng(lat, lon)
-                    trackPoints.add(position)
-                    if (trackPoints.size > 1000) {
-                        trackPoints.removeAt(0)
-                    }
-
-                    mMap.clear()
-                    mMap.addPolyline(
-                        PolylineOptions()
-                            .addAll(trackPoints)
-                            .color(android.graphics.Color.BLUE)
-                            .width(5f)
-                    )
-
-                    val zoom = mMap.cameraPosition.zoom
-                    val markerSize = (zoom * 5).toInt()
-
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(position)
-                            .title("Current Position")
-                            .snippet("Speed: $speed Kn, Heading: ${heading.toInt()}°")
-                            .icon(bitmapDescriptorFromVector(this, R.drawable.ic_boat_marker, markerSize, markerSize))
-                            .rotation(heading)
-                            .anchor(0.5f, 0.5f)
-                    )
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15f))
-                }
-            },
-            { })
-
-        queue.add(stringRequest)
-
+        fetchAllChannelsData()
         handler.postDelayed({ fetchData() }, 15000)
+    }
+
+    private fun fetchAllChannelsData() {
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val channels = arrayOf(
+            sharedPreferences.getString("channel1", "3002133")!!,
+            sharedPreferences.getString("channel2", "3007462")!!,
+            sharedPreferences.getString("channel3", "3017966")!!,
+            sharedPreferences.getString("channel4", "3017982")!!
+        )
+        val icons = arrayOf(R.drawable.green_triangle, R.drawable.blue_triangle, R.drawable.red_triangle, R.drawable.yellow_triangle)
+        val trackColors = arrayOf(android.graphics.Color.GREEN, android.graphics.Color.BLUE, android.graphics.Color.RED, android.graphics.Color.YELLOW)
+
+        mMap.clear()
+        clusterManager.clearItems()
+
+        for (i in channels.indices) {
+            val channel = channels[i]
+            val icon = icons[i]
+            val trackColor = trackColors[i]
+            val results = if (channel == this.channel) 2000 else 1
+            val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=$results"
+
+            val stringRequest = StringRequest(
+                Request.Method.GET, url,
+                { response ->
+                    val jsonObject = JSONObject(response)
+                    val feeds = jsonObject.getJSONArray("feeds")
+                    if (feeds.length() > 0) {
+                        val channelTrackPoints = mutableListOf<LatLng>()
+                        for (j in 0 until feeds.length()) {
+                            val feed = feeds.getJSONObject(j)
+                            val lat = feed.getString("field3").toDouble()
+                            val lon = feed.getString("field4").toDouble()
+                            val position = LatLng(lat, lon)
+                            channelTrackPoints.add(position)
+
+                            if (binding.trackSwitch.isChecked) {
+                                val markerData = "Channel: $channel\\nDate: ${formatDate(feed.getString("created_at"))}\\nLat: ${formatLat(lat)}\\nLon: ${formatLon(lon)}"
+                                val clusterItem = MyClusterItem(lat, lon, "Channel $channel", markerData)
+                                clusterManager.addItem(clusterItem)
+                            }
+                        }
+
+                        mMap.addPolyline(
+                            PolylineOptions()
+                                .addAll(channelTrackPoints)
+                                .color(trackColor)
+                                .width(5f)
+                        )
+
+                        val lastFeed = feeds.getJSONObject(feeds.length() - 1)
+                        val lat = lastFeed.getString("field3").toDouble()
+                        val lon = lastFeed.getString("field4").toDouble()
+                        val position = LatLng(lat, lon)
+                        val heading = lastFeed.getString("field6").toFloat()
+
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(position)
+                                .title("Channel $channel")
+                                .icon(bitmapDescriptorFromVector(this, icon, 50, 50))
+                                .rotation(heading)
+                                .anchor(0.5f, 0.5f)
+                        )
+
+                        if (channel == this.channel) {
+                            val channelName = jsonObject.getJSONObject("channel").getString("name")
+                            binding.channelNameTextView.text = channelName
+                            val speed = lastFeed.getString("field5")
+                            val pitch = lastFeed.getString("field1")
+                            val roll = lastFeed.getString("field2")
+
+                            binding.latTextView.text = "${getString(R.string.lat)} : ${formatLat(lat)}"
+                            binding.lonTextView.text = "${getString(R.string.lon)} : ${formatLon(lon)}"
+                            binding.speedTextView.text = "${getString(R.string.speed)} : ${"%.1f".format(speed.toFloat())} Kn ."
+                            binding.headingTextView.text = "${getString(R.string.heading)} : ${heading.toInt()}°"
+                            binding.pitchTextView.text = "${getString(R.string.pitch)} : ${"%.1f".format(pitch.toFloat())}°"
+                            binding.rollTextView.text = "${getString(R.string.roll)} : ${"%.1f".format(roll.toFloat())}°"
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, currentZoom))
+                        }
+                    }
+                },
+                { })
+            VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
+        }
+        clusterManager.cluster()
     }
 
     // --- Funciones auxiliares convertidas a Kotlin ---
@@ -194,5 +291,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }
+    }
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
     }
 }

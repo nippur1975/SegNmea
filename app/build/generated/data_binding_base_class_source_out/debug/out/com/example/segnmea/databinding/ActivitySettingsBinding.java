@@ -5,10 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
@@ -23,29 +20,20 @@ public final class ActivitySettingsBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final TextView aboutTextView;
+  public final Button alarmButton;
 
   @NonNull
-  public final EditText channelEditText;
+  public final Button channelButton;
 
   @NonNull
-  public final SeekBar pitchSeekBar;
+  public final Button languageButton;
 
-  @NonNull
-  public final SeekBar rollSeekBar;
-
-  @NonNull
-  public final Button saveButton;
-
-  private ActivitySettingsBinding(@NonNull LinearLayout rootView, @NonNull TextView aboutTextView,
-      @NonNull EditText channelEditText, @NonNull SeekBar pitchSeekBar,
-      @NonNull SeekBar rollSeekBar, @NonNull Button saveButton) {
+  private ActivitySettingsBinding(@NonNull LinearLayout rootView, @NonNull Button alarmButton,
+      @NonNull Button channelButton, @NonNull Button languageButton) {
     this.rootView = rootView;
-    this.aboutTextView = aboutTextView;
-    this.channelEditText = channelEditText;
-    this.pitchSeekBar = pitchSeekBar;
-    this.rollSeekBar = rollSeekBar;
-    this.saveButton = saveButton;
+    this.alarmButton = alarmButton;
+    this.channelButton = channelButton;
+    this.languageButton = languageButton;
   }
 
   @Override
@@ -75,38 +63,26 @@ public final class ActivitySettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.aboutTextView;
-      TextView aboutTextView = ViewBindings.findChildViewById(rootView, id);
-      if (aboutTextView == null) {
+      id = R.id.alarmButton;
+      Button alarmButton = ViewBindings.findChildViewById(rootView, id);
+      if (alarmButton == null) {
         break missingId;
       }
 
-      id = R.id.channelEditText;
-      EditText channelEditText = ViewBindings.findChildViewById(rootView, id);
-      if (channelEditText == null) {
+      id = R.id.channelButton;
+      Button channelButton = ViewBindings.findChildViewById(rootView, id);
+      if (channelButton == null) {
         break missingId;
       }
 
-      id = R.id.pitchSeekBar;
-      SeekBar pitchSeekBar = ViewBindings.findChildViewById(rootView, id);
-      if (pitchSeekBar == null) {
+      id = R.id.languageButton;
+      Button languageButton = ViewBindings.findChildViewById(rootView, id);
+      if (languageButton == null) {
         break missingId;
       }
 
-      id = R.id.rollSeekBar;
-      SeekBar rollSeekBar = ViewBindings.findChildViewById(rootView, id);
-      if (rollSeekBar == null) {
-        break missingId;
-      }
-
-      id = R.id.saveButton;
-      Button saveButton = ViewBindings.findChildViewById(rootView, id);
-      if (saveButton == null) {
-        break missingId;
-      }
-
-      return new ActivitySettingsBinding((LinearLayout) rootView, aboutTextView, channelEditText,
-          pitchSeekBar, rollSeekBar, saveButton);
+      return new ActivitySettingsBinding((LinearLayout) rootView, alarmButton, channelButton,
+          languageButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

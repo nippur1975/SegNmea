@@ -18,16 +18,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCCsWLI_oB-Sq6YGeCD9lEerfNNVgkkjjU" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CompassActivity" />
-        <activity android:name=".ClinometerActivity" />
-        <activity android:name=".DataActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".CompassActivity" android:exported="false"/>
+        <activity android:name=".ClinometerActivity" android:exported="false"/>
+        <activity android:name=".DataActivity" android:exported="false"/>
+        <activity android:name=".LanguageActivity" android:exported="false"/>
+        <activity android:name=".ChannelActivity" android:exported="false"/>
+        <activity android:name=".AlarmActivity" android:exported="false"/>
+        <activity android:name=".SettingsActivity" android:exported="false"/>
 
     </application>
 

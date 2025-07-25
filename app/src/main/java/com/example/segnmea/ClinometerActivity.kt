@@ -66,7 +66,7 @@ class ClinometerActivity : AppCompatActivity() {
                     binding.pitchValueTextView.text = "$pitch°"
                     binding.rollValueTextView.text = "$roll°"
 
-                    binding.pitchImageView.rotation = pitch
+                    binding.pitchImageView.rotationY = pitch
                     binding.rollImageView.rotation = roll
 
                     checkAlarms(pitch, roll)

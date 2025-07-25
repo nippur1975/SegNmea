@@ -1,59 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".SettingsActivity">
-
-    <EditText
-        android:id="@+id/channelEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/channel_id"
-        android:inputType="number" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/pitch_alarm_threshold" />
-
-    <SeekBar
-        android:id="@+id/pitchSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="30" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/roll_alarm_threshold" />
-
-    <SeekBar
-        android:id="@+id/rollSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="30" />
+    android:padding="16dp">
 
     <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/languageButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="@string/save" />
+        android:text="@string/language" />
 
-    <TextView
-        android:id="@+id/aboutTextView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/channelButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:text="@string/about_text"
-        android:textSize="16sp" />
+        android:text="@string/channel" />
+
+    <Button
+        android:id="@+id/alarmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_alarms" />
 
 </LinearLayout>

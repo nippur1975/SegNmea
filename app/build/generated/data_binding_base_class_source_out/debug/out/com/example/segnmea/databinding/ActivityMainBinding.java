@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,15 @@ import java.lang.String;
 public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   private final ConstraintLayout rootView;
+
+  @NonNull
+  public final LinearLayout buttonContainer;
+
+  @NonNull
+  public final Button channelButton;
+
+  @NonNull
+  public final TextView channelNameTextView;
 
   @NonNull
   public final Button clinometerButton;
@@ -47,11 +58,20 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final TextView speedTextView;
 
-  private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull Button clinometerButton,
+  @NonNull
+  public final Switch trackSwitch;
+
+  private ActivityMainBinding(@NonNull ConstraintLayout rootView,
+      @NonNull LinearLayout buttonContainer, @NonNull Button channelButton,
+      @NonNull TextView channelNameTextView, @NonNull Button clinometerButton,
       @NonNull Button compassButton, @NonNull Button dataButton, @NonNull TextView headingTextView,
       @NonNull TextView latTextView, @NonNull TextView lonTextView, @NonNull TextView pitchTextView,
-      @NonNull TextView rollTextView, @NonNull TextView speedTextView) {
+      @NonNull TextView rollTextView, @NonNull TextView speedTextView,
+      @NonNull Switch trackSwitch) {
     this.rootView = rootView;
+    this.buttonContainer = buttonContainer;
+    this.channelButton = channelButton;
+    this.channelNameTextView = channelNameTextView;
     this.clinometerButton = clinometerButton;
     this.compassButton = compassButton;
     this.dataButton = dataButton;
@@ -61,6 +81,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.pitchTextView = pitchTextView;
     this.rollTextView = rollTextView;
     this.speedTextView = speedTextView;
+    this.trackSwitch = trackSwitch;
   }
 
   @Override
@@ -90,6 +111,24 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.buttonContainer;
+      LinearLayout buttonContainer = ViewBindings.findChildViewById(rootView, id);
+      if (buttonContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.channelButton;
+      Button channelButton = ViewBindings.findChildViewById(rootView, id);
+      if (channelButton == null) {
+        break missingId;
+      }
+
+      id = R.id.channelNameTextView;
+      TextView channelNameTextView = ViewBindings.findChildViewById(rootView, id);
+      if (channelNameTextView == null) {
+        break missingId;
+      }
+
       id = R.id.clinometerButton;
       Button clinometerButton = ViewBindings.findChildViewById(rootView, id);
       if (clinometerButton == null) {
@@ -144,9 +183,15 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityMainBinding((ConstraintLayout) rootView, clinometerButton, compassButton,
-          dataButton, headingTextView, latTextView, lonTextView, pitchTextView, rollTextView,
-          speedTextView);
+      id = R.id.trackSwitch;
+      Switch trackSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (trackSwitch == null) {
+        break missingId;
+      }
+
+      return new ActivityMainBinding((ConstraintLayout) rootView, buttonContainer, channelButton,
+          channelNameTextView, clinometerButton, compassButton, dataButton, headingTextView,
+          latTextView, lonTextView, pitchTextView, rollTextView, speedTextView, trackSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

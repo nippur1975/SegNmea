@@ -1,6 +1,6 @@
 package com.example.segnmea
 
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.segnmea.databinding.ActivitySettingsBinding
@@ -15,24 +15,16 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.settings)
 
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val channel = sharedPreferences.getString("channel", "3002133")
-        val pitchAlarm = sharedPreferences.getInt("pitchAlarm", 30)
-        val rollAlarm = sharedPreferences.getInt("rollAlarm", 30)
+        binding.languageButton.setOnClickListener {
+            startActivity(Intent(this, LanguageActivity::class.java))
+        }
 
-        // Asignar valores iniciales a los controles
-        binding.channelEditText.setText(channel)
-        binding.pitchSeekBar.progress = pitchAlarm
-        binding.rollSeekBar.progress = rollAlarm
+        binding.channelButton.setOnClickListener {
+            startActivity(Intent(this, ChannelActivity::class.java))
+        }
 
-        // Guardar al hacer clic en "Guardar"
-        binding.saveButton.setOnClickListener {
-            val editor = sharedPreferences.edit()
-            editor.putString("channel", binding.channelEditText.text.toString())
-            editor.putInt("pitchAlarm", binding.pitchSeekBar.progress)
-            editor.putInt("rollAlarm", binding.rollSeekBar.progress)
-            editor.apply()
-            finish()
+        binding.alarmButton.setOnClickListener {
+            startActivity(Intent(this, AlarmActivity::class.java))
         }
     }
 }
