@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.segnmea.R;
+import com.google.android.material.imageview.ShapeableImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -29,7 +29,7 @@ public final class ActivityCompassBinding implements ViewBinding {
   public final Button clinometerButton;
 
   @NonNull
-  public final ImageView compassRose;
+  public final ShapeableImageView compassRose;
 
   @NonNull
   public final Button dataButton;
@@ -45,7 +45,7 @@ public final class ActivityCompassBinding implements ViewBinding {
 
   private ActivityCompassBinding(@NonNull ConstraintLayout rootView,
       @NonNull TextView channelNameTextView, @NonNull Button clinometerButton,
-      @NonNull ImageView compassRose, @NonNull Button dataButton,
+      @NonNull ShapeableImageView compassRose, @NonNull Button dataButton,
       @NonNull TextView headingValueTextView, @NonNull LinearLayout linearLayout,
       @NonNull Button mainButton) {
     this.rootView = rootView;
@@ -98,7 +98,7 @@ public final class ActivityCompassBinding implements ViewBinding {
       }
 
       id = R.id.compassRose;
-      ImageView compassRose = ViewBindings.findChildViewById(rootView, id);
+      ShapeableImageView compassRose = ViewBindings.findChildViewById(rootView, id);
       if (compassRose == null) {
         break missingId;
       }

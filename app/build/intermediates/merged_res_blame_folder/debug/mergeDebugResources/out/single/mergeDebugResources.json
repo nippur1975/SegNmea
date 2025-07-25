@@ -56,6 +56,10 @@
         "source": "com.example.segnmea.app-main-37:/menu/main_menu.xml"
     },
     {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_roseyy.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compass_roseyy.png"
+    },
+    {
         "merged": "com.example.segnmea.app-debug-35:/raw_alarma_estribor.mp3.flat",
         "source": "com.example.segnmea.app-main-37:/raw/alarma_estribor.mp3"
     },
@@ -102,6 +106,10 @@
     {
         "merged": "com.example.segnmea.app-debug-35:/drawable_pitch.png.flat",
         "source": "com.example.segnmea.app-main-37:/drawable/pitch.png"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rosexx.png.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/compass_rosexx.png"
     },
     {
         "merged": "com.example.segnmea.app-debug-35:/layout_activity_data.xml.flat",

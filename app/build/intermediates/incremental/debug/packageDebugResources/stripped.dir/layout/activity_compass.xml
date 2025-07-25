@@ -29,12 +29,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
+    <!-- Rosa circular llenando todo el espacio -->
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/compassRose"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:src="@drawable/compass_rose"
         android:layout_marginTop="40dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:shapeAppearanceOverlay="@style/CircleImage"
         app:layout_constraintTop_toBottomOf="@id/headingValueTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

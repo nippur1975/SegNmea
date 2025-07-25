@@ -19,8 +19,7 @@ class ClinometerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClinometerBinding
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
-    private var pitchAlarm = 30f
-    private var rollAlarm = 30f
+    private var rollAlarm = 30f  // Solo alarma de roll
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +43,6 @@ class ClinometerActivity : AppCompatActivity() {
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
-        pitchAlarm = sharedPreferences.getInt("pitchAlarm", 30).toFloat()
         rollAlarm = sharedPreferences.getInt("rollAlarm", 30).toFloat()
         val queue = Volley.newRequestQueue(this)
         val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
@@ -60,34 +58,22 @@ class ClinometerActivity : AppCompatActivity() {
                 val feeds = jsonObject.getJSONArray("feeds")
                 if (feeds.length() > 0) {
                     val lastFeed = feeds.getJSONObject(0)
-                    val pitch = lastFeed.getString("field1").toFloat()
                     val roll = lastFeed.getString("field2").toFloat()
 
-                    binding.pitchValueTextView.text = "$pitch°"
-                    binding.rollValueTextView.text = "$roll°"
+                    // Mostramos el valor en un TextView (debes tenerlo en tu XML)
+                    binding.rollValueTextView.text = "Roll: ${"%.1f".format(roll)}°"
 
-                    binding.pitchImageView.rotationY = pitch
-                    binding.rollImageView.rotation = roll
-
-                    checkAlarms(pitch, roll)
+                    checkAlarms(roll)
                 }
             },
             { })
 
         queue.add(stringRequest)
-
         handler.postDelayed({ fetchData() }, 15000)
     }
 
-    private fun checkAlarms(pitch: Float, roll: Float) {
+    private fun checkAlarms(roll: Float) {
         val language = Locale.getDefault().language
-        if (pitch > pitchAlarm) {
-            val sound = if (language == "es") R.raw.alarma_encabuzado else R.raw.head_alarm
-            MediaPlayer.create(this, sound).start()
-        } else if (pitch < -pitchAlarm) {
-            val sound = if (language == "es") R.raw.alarma_sentado else R.raw.stern_alarm
-            MediaPlayer.create(this, sound).start()
-        }
 
         if (roll > rollAlarm) {
             val sound = if (language == "es") R.raw.alarma_estribor else R.raw.starboard_alarm

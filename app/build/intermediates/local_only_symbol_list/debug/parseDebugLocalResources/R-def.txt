@@ -14,6 +14,8 @@ drawable compas2
 drawable compas3
 drawable compass_rose
 drawable compass_rose1
+drawable compass_rosexx
+drawable compass_roseyy
 drawable green_triangle
 drawable ic_boat_marker
 drawable pitch
@@ -97,3 +99,4 @@ string settings
 string settings_alarms
 string speed
 style AppTheme
+style CircleImage
