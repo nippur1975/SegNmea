@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.example.segnmea.app-mergeDebugResources-16:/layout/activity_compass.xml",
+        "source": "com.example.segnmea.app-main-19:/layout/activity_compass.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-mergeDebugResources-16:/layout/activity_main.xml",
+        "source": "com.example.segnmea.app-main-19:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-mergeDebugResources-16:/layout/activity_settings.xml",
+        "source": "com.example.segnmea.app-main-19:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-mergeDebugResources-16:/layout/activity_clinometer.xml",
+        "source": "com.example.segnmea.app-main-19:/layout/activity_clinometer.xml"
+    },
+    {
+        "merged": "com.example.segnmea.app-mergeDebugResources-16:/layout/activity_data.xml",
+        "source": "com.example.segnmea.app-main-19:/layout/activity_data.xml"
+    }
+]

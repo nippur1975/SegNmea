@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,16 +15,20 @@ import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.segnmea.databinding.ActivityMainBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var mMap: GoogleMap
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
@@ -31,20 +36,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         title = getString(R.string.app_name)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        compassButton.setOnClickListener {
+        binding.compassButton.setOnClickListener {
             startActivity(Intent(this, CompassActivity::class.java))
         }
-        clinometerButton.setOnClickListener {
+        binding.clinometerButton.setOnClickListener {
             startActivity(Intent(this, ClinometerActivity::class.java))
         }
-        dataButton.setOnClickListener {
+        binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
         }
     }
@@ -92,12 +98,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     val pitch = lastFeed.getString("field1")
                     val roll = lastFeed.getString("field2")
 
-                    latTextView.text = "Lat: $lat"
-                    lonTextView.text = "Lon: $lon"
-                    speedTextView.text = "Speed: $speed Kn"
-                    headingTextView.text = "Heading: ${heading.toInt()}°"
-                    pitchTextView.text = "Pitch: $pitch°"
-                    rollTextView.text = "Roll: $roll°"
+                    binding.latTextView.text = "Lat: $lat"
+                    binding.lonTextView.text = "Lon: $lon"
+                    binding.speedTextView.text = "Speed: $speed Kn"
+                    binding.headingTextView.text = "Heading: ${heading.toInt()}°"
+                    binding.pitchTextView.text = "Pitch: $pitch°"
+                    binding.rollTextView.text = "Roll: $roll°"
 
                     val position = LatLng(lat, lon)
                     trackPoints.add(position)
@@ -106,7 +112,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                     mMap.clear()
-                    mMap.addPolyline(PolylineOptions().addAll(trackPoints).color(android.graphics.Color.BLUE).width(5f))
+                    mMap.addPolyline(
+                        PolylineOptions()
+                            .addAll(trackPoints)
+                            .color(android.graphics.Color.BLUE)
+                            .width(5f)
+                    )
 
                     val zoom = mMap.cameraPosition.zoom
                     val markerSize = (zoom * 5).toInt()
@@ -128,6 +139,52 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         queue.add(stringRequest)
 
         handler.postDelayed({ fetchData() }, 15000)
+    }
+
+    // --- Funciones auxiliares convertidas a Kotlin ---
+    private fun formatDate(iso: String): String {
+        return try {
+            val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+            isoFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val date = isoFormat.parse(iso)
+            if (date != null) {
+                val outFormat = SimpleDateFormat("HH:mm   dd-MM-yyyy", Locale.US)
+                outFormat.timeZone = TimeZone.getDefault()
+                outFormat.format(date)
+            } else {
+                iso
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            iso
+        }
+    }
+
+    private fun formatLat(lat: Double): String {
+        val hemi = if (lat >= 0) "N" else "S"
+        val absLat = kotlin.math.abs(lat)
+        val grados = absLat.toInt()
+        val minutos = (absLat - grados) * 60
+        return String.format(Locale.US, "%02d° %.3f' %s", grados, minutos, hemi)
+    }
+
+    private fun formatLon(lon: Double): String {
+        val hemi = if (lon >= 0) "E" else "W"
+        val absLon = kotlin.math.abs(lon)
+        val grados = absLon.toInt()
+        val minutos = (absLon - grados) * 60
+        return String.format(Locale.US, "%03d° %.3f' %s", grados, minutos, hemi)
+    }
+
+    private fun getBitmapDescriptor(id: Int): BitmapDescriptor {
+        val vectorDrawable = ContextCompat.getDrawable(this, id)!!
+        val h = vectorDrawable.intrinsicHeight
+        val w = vectorDrawable.intrinsicWidth
+        vectorDrawable.setBounds(0, 0, w, h)
+        val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bm)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bm)
     }
 
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int, width: Int, height: Int): BitmapDescriptor? {

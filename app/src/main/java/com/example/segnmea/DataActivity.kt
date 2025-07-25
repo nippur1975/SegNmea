@@ -9,26 +9,28 @@ import android.os.Looper
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_data.*
+import com.example.segnmea.databinding.ActivityDataBinding
 import org.json.JSONObject
 
 class DataActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityDataBinding
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_data)
+        binding = ActivityDataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         title = getString(R.string.data)
 
-        mainButton.setOnClickListener {
+        binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
-        compassButton.setOnClickListener {
+        binding.compassButton.setOnClickListener {
             startActivity(Intent(this, CompassActivity::class.java))
         }
-        clinometerButton.setOnClickListener {
+        binding.clinometerButton.setOnClickListener {
             startActivity(Intent(this, ClinometerActivity::class.java))
         }
 
@@ -47,7 +49,7 @@ class DataActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val channelObject = jsonObject.getJSONObject("channel")
                 val channelName = channelObject.getString("name")
-                channelNameTextView.text = channelName
+                binding.channelNameTextView.text = channelName
 
                 val feeds = jsonObject.getJSONArray("feeds")
                 if (feeds.length() > 0) {
@@ -59,12 +61,12 @@ class DataActivity : AppCompatActivity() {
                     val pitch = lastFeed.getString("field1")
                     val roll = lastFeed.getString("field2")
 
-                    latTextView.text = "Lat: $lat"
-                    lonTextView.text = "Lon: $lon"
-                    speedTextView.text = "Speed: $speed Kn"
-                    headingTextView.text = "Heading: $heading°"
-                    pitchTextView.text = "Pitch: $pitch°"
-                    rollTextView.text = "Roll: $roll°"
+                    binding.latTextView.text = "Lat: $lat"
+                    binding.lonTextView.text = "Lon: $lon"
+                    binding.speedTextView.text = "Speed: $speed Kn"
+                    binding.headingTextView.text = "Heading: $heading°"
+                    binding.pitchTextView.text = "Pitch: $pitch°"
+                    binding.rollTextView.text = "Roll: $roll°"
                 }
             },
             { })

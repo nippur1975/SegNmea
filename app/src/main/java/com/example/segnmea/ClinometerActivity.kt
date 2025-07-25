@@ -10,12 +10,13 @@ import android.os.Looper
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_clinometer.*
+import com.example.segnmea.databinding.ActivityClinometerBinding
 import org.json.JSONObject
 import java.util.*
 
 class ClinometerActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityClinometerBinding
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
     private var pitchAlarm = 30f
@@ -23,16 +24,17 @@ class ClinometerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_clinometer)
+        binding = ActivityClinometerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         title = getString(R.string.clinometer)
 
-        mainButton.setOnClickListener {
+        binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
-        compassButton.setOnClickListener {
+        binding.compassButton.setOnClickListener {
             startActivity(Intent(this, CompassActivity::class.java))
         }
-        dataButton.setOnClickListener {
+        binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
         }
 
@@ -53,7 +55,7 @@ class ClinometerActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val channelObject = jsonObject.getJSONObject("channel")
                 val channelName = channelObject.getString("name")
-                channelNameTextView.text = channelName
+                binding.channelNameTextView.text = channelName
 
                 val feeds = jsonObject.getJSONArray("feeds")
                 if (feeds.length() > 0) {
@@ -61,11 +63,11 @@ class ClinometerActivity : AppCompatActivity() {
                     val pitch = lastFeed.getString("field1").toFloat()
                     val roll = lastFeed.getString("field2").toFloat()
 
-                    pitchValueTextView.text = "$pitch°"
-                    rollValueTextView.text = "$roll°"
+                    binding.pitchValueTextView.text = "$pitch°"
+                    binding.rollValueTextView.text = "$roll°"
 
-                    pitchImageView.rotation = pitch
-                    rollImageView.rotation = roll
+                    binding.pitchImageView.rotation = pitch
+                    binding.rollImageView.rotation = roll
 
                     checkAlarms(pitch, roll)
                 }

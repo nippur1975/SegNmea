@@ -1,0 +1,119 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.segnmea"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="30" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+12-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:6:5-79
+12-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:6:22-76
+13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+13-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:7:5-81
+13-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:7:22-78
+14
+15    <!-- Include required permissions for Google Maps API to run. -->
+16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+16-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:23:5-79
+16-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:23:22-76
+17
+18    <uses-feature
+18-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:26:5-28:35
+19        android:glEsVersion="0x00020000"
+19-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:27:9-41
+20        android:required="true" />
+20-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:28:9-32
+21
+22    <queries>
+22-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:30:5-34:15
+23
+24        <!-- Needs to be explicitly declared on Android R+ -->
+25        <package android:name="com.google.android.apps.maps" />
+25-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:33:9-64
+25-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:33:18-61
+26    </queries>
+27
+28    <application
+28-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:9:5-32:19
+29        android:allowBackup="true"
+29-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:10:9-35
+30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+30-->[androidx.core:core:1.5.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\d1fbcfefbf17e016cabf4f3bdfe3e877\transformed\core-1.5.0\AndroidManifest.xml:24:18-86
+31        android:debuggable="true"
+32        android:extractNativeLibs="true"
+33        android:icon="@drawable/barco"
+33-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:11:9-39
+34        android:label="@string/app_name"
+34-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:12:9-41
+35        android:roundIcon="@drawable/barco"
+35-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:13:9-44
+36        android:supportsRtl="true"
+36-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:14:9-35
+37        android:theme="@style/AppTheme" >
+37-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:15:9-40
+38        <meta-data
+38-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:17:9-19:71
+39            android:name="com.google.android.geo.API_KEY"
+39-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:18:13-58
+40            android:value="AIzaSyCCsWLI_oB-Sq6YGeCD9lEerfNNVgkkjjU" />
+40-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:19:13-68
+41
+42        <activity android:name="com.example.segnmea.MainActivity" >
+42-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:9-26:20
+42-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:19-47
+43            <intent-filter>
+43-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:22:13-25:29
+44                <action android:name="android.intent.action.MAIN" />
+44-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:17-69
+44-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:25-66
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+46-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:17-77
+46-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:27-74
+47            </intent-filter>
+48        </activity>
+49        <activity android:name="com.example.segnmea.CompassActivity" />
+49-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:9-53
+49-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:19-50
+50        <activity android:name="com.example.segnmea.ClinometerActivity" />
+50-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:9-56
+50-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:19-53
+51        <activity android:name="com.example.segnmea.DataActivity" />
+51-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:9-50
+51-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:19-47
+52        <activity android:name="com.example.segnmea.SettingsActivity" />
+52-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:9-54
+52-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:19-51
+53
+54        <!-- Needs to be explicitly declared on P+ -->
+55        <uses-library
+55-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:39:9-41:40
+56            android:name="org.apache.http.legacy"
+56-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:40:13-50
+57            android:required="false" />
+57-->[com.google.android.gms:play-services-maps:17.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\bcdb96025c4d02269e53bc452adb95c5\transformed\jetified-play-services-maps-17.0.1\AndroidManifest.xml:41:13-37
+58
+59        <activity
+59-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\535d7dc17009b2a31e5178f59b1a8143\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+60            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+60-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\535d7dc17009b2a31e5178f59b1a8143\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+61            android:exported="false"
+61-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\535d7dc17009b2a31e5178f59b1a8143\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+62            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+62-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\535d7dc17009b2a31e5178f59b1a8143\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+63
+64        <meta-data
+64-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\280dbe9e7ab997fa51ad39530f1a85af\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+65            android:name="com.google.android.gms.version"
+65-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\280dbe9e7ab997fa51ad39530f1a85af\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+66            android:value="@integer/google_play_services_version" />
+66-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\280dbe9e7ab997fa51ad39530f1a85af\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+67    </application>
+68
+69</manifest>

@@ -9,26 +9,28 @@ import android.os.Looper
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_compass.*
+import com.example.segnmea.databinding.ActivityCompassBinding
 import org.json.JSONObject
 
 class CompassActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityCompassBinding
     private val handler = Handler(Looper.getMainLooper())
     private var channel = "3002133"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_compass)
+        binding = ActivityCompassBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         title = getString(R.string.compass)
 
-        mainButton.setOnClickListener {
+        binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
-        clinometerButton.setOnClickListener {
+        binding.clinometerButton.setOnClickListener {
             startActivity(Intent(this, ClinometerActivity::class.java))
         }
-        dataButton.setOnClickListener {
+        binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
         }
 
@@ -47,14 +49,14 @@ class CompassActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val channelObject = jsonObject.getJSONObject("channel")
                 val channelName = channelObject.getString("name")
-                channelNameTextView.text = channelName
+                binding.channelNameTextView.text = channelName
 
                 val feeds = jsonObject.getJSONArray("feeds")
                 if (feeds.length() > 0) {
                     val lastFeed = feeds.getJSONObject(0)
                     val heading = lastFeed.getString("field6").toFloat()
-                    headingValueTextView.text = heading.toInt().toString()
-                    compassRose.rotation = -heading
+                    binding.headingValueTextView.text = heading.toInt().toString()
+                    binding.compassRose.rotation = -heading
                 }
             },
             { })
