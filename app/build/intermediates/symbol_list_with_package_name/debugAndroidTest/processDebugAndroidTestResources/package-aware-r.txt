@@ -1,0 +1,3 @@
+com.example.segnmea.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
