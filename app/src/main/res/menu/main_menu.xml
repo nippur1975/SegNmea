@@ -3,16 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        android:icon="@android:drawable/ic_menu_manage"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_about"
-        android:title="@string/about"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_ruler"
-        android:title="@string/ruler"
-        app:showAsAction="never"/>
+        android:id="@+id/action_service"
+        android:title="Servicio"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/action_alarm_settings"
+                android:title="Configuración Alarma" />
+            <item
+                android:id="@+id/action_channel_settings"
+                android:title="Configuración Canal" />
+            <item
+                android:id="@+id/action_select_channel"
+                android:title="Selección de Canal" />
+            <item
+                android:id="@+id/action_language_settings"
+                android:title="Selección de Idioma" />
+            <item
+                android:id="@+id/action_about"
+                android:title="Acerca de" />
+        </menu>
+    </item>
 </menu>

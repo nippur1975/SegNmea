@@ -8,6 +8,9 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 
+/**
+ * Custom view that displays the pitch of the boat.
+ */
 class PitchView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs) {
@@ -39,6 +42,9 @@ class PitchView @JvmOverloads constructor(
     private val pitchBitmap = (context.getDrawable(R.drawable.pitch) as? android.graphics.drawable.BitmapDrawable)?.bitmap
     private val pitchPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    /**
+     * The pitch of the boat in degrees.
+     */
     var pitch = 0f
         set(value) {
             field = value

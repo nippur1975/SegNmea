@@ -30,6 +30,9 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Main activity of the application. Displays a map with the boat's location and track.
+ */
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMainBinding
@@ -47,17 +50,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Set the language based on shared preferences
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val language = sharedPreferences.getString("language", "en")
         setLocale(language!!)
+
+        // Inflate the layout and set the content view
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.background = null
         title = getString(R.string.app_name)
 
+        // Initialize the map
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        // Set up the button click listeners
         binding.compassButton.setOnClickListener {
             startActivity(Intent(this, CompassActivity::class.java))
         }
@@ -67,109 +77,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
         }
-
         binding.zoomInButton.setOnClickListener {
             mMap.animateCamera(CameraUpdateFactory.zoomIn())
         }
-
         binding.zoomOutButton.setOnClickListener {
             mMap.animateCamera(CameraUpdateFactory.zoomOut())
         }
-
         binding.channelButton.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-            val channels = arrayOf(
-                sharedPreferences.getString("channel1", "3002133")!!,
-                sharedPreferences.getString("channel2", "3007462")!!,
-                sharedPreferences.getString("channel3", "3017966")!!,
-                sharedPreferences.getString("channel4", "3017982")!!
-            )
-            var checkedItem = 0
-            when (channel) {
-                channels[0] -> checkedItem = 0
-                channels[1] -> checkedItem = 1
-                channels[2] -> checkedItem = 2
-                channels[3] -> checkedItem = 3
-            }
-
-            AlertDialog.Builder(this)
-                .setTitle("Select Active Channel")
-                .setSingleChoiceItems(channels, checkedItem) { _, which ->
-                    val editor = sharedPreferences.edit()
-                    editor.putString("channel", channels[which])
-                    editor.apply()
-                    fetchData()
-                }
-                .setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            showChannelSelectionDialog()
         }
     }
 
+    /**
+     * Called when the map is ready to be used.
+     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
-        mMap.uiSettings.isZoomControlsEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = true
 
+        // Initialize the cluster manager
         clusterManager = ClusterManager(this, mMap)
         mMap.setOnCameraIdleListener(clusterManager)
         mMap.setOnMarkerClickListener(clusterManager)
 
+        // Set up the map click listener for the ruler mode
         mMap.setOnMapClickListener { latLng ->
             if (rulerMode) {
-                if (rulerPoints.size < 2) {
-                    rulerPoints.add(latLng)
-                    val marker = mMap.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title("Point ${rulerPoints.size}")
-                    )
-                    if (marker != null) {
-                        rulerMarkers.add(marker)
-                    }
-
-                    if (rulerPoints.size == 2) {
-                        val distance = FloatArray(1)
-                        Location.distanceBetween(
-                            rulerPoints[0].latitude, rulerPoints[0].longitude,
-                            rulerPoints[1].latitude, rulerPoints[1].longitude,
-                            distance
-                        )
-                        val start = Location("")
-                        start.latitude = rulerPoints[0].latitude
-                        start.longitude = rulerPoints[0].longitude
-                        val end = Location("")
-                        end.latitude = rulerPoints[1].latitude
-                        end.longitude = rulerPoints[1].longitude
-                        val bearing = start.bearingTo(end)
-                        val info = "Distance: ${"%.2f".format(distance[0] / 1852)} NM\\nBearing: ${"%.1f".format(bearing)}°"
-
-                        rulerLine = mMap.addPolyline(
-                            PolylineOptions()
-                                .add(rulerPoints[0], rulerPoints[1])
-                                .color(android.graphics.Color.YELLOW)
-                                .width(5f)
-                        )
-                        Toast.makeText(this, info, Toast.LENGTH_LONG).show()
-
-                        handler.postDelayed({
-                            rulerLine?.remove()
-                            rulerMarkers.forEach { it.remove() }
-                            rulerPoints.clear()
-                            rulerMarkers.clear()
-                            rulerMode = false
-                        }, 30000)
-                    }
-                }
+                handleRulerMode(latLng)
             }
         }
 
+        // Set the map padding to make space for the buttons
         binding.compassButton.post {
             val buttonContainerHeight = binding.compassButton.height
             mMap.setPadding(0, 0, 0, buttonContainerHeight)
         }
 
+        // Set up the track switch listener
         binding.trackSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 fetchAllChannelsData()
@@ -179,39 +124,143 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        // Set up the ruler switch listener
+        binding.rulerSwitch.setOnCheckedChangeListener { _, isChecked ->
+            rulerMode = isChecked
+            if (!isChecked) {
+                rulerLine?.remove()
+                rulerMarkers.forEach { it.remove() }
+                rulerPoints.clear()
+                rulerMarkers.clear()
+            }
+        }
+
+        // Fetch the initial data
         fetchData()
     }
 
+    /**
+     * Shows the channel selection dialog.
+     */
+    private fun showChannelSelectionDialog() {
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val channels = arrayOf(
+            sharedPreferences.getString("channel1", "3002133")!!,
+            sharedPreferences.getString("channel2", "3007462")!!,
+            sharedPreferences.getString("channel3", "3017966")!!,
+            sharedPreferences.getString("channel4", "3017982")!!
+        )
+        var checkedItem = 0
+        when (channel) {
+            channels[0] -> checkedItem = 0
+            channels[1] -> checkedItem = 1
+            channels[2] -> checkedItem = 2
+            channels[3] -> checkedItem = 3
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Select Active Channel")
+            .setSingleChoiceItems(channels, checkedItem) { _, which ->
+                val editor = sharedPreferences.edit()
+                editor.putString("channel", channels[which])
+                editor.apply()
+                fetchData()
+            }
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    /**
+     * Handles the ruler mode logic.
+     */
+    private fun handleRulerMode(latLng: LatLng) {
+        rulerPoints.add(latLng)
+        val marker = mMap.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title("Point ${rulerPoints.size}")
+        )
+        if (marker != null) {
+            rulerMarkers.add(marker)
+        }
+
+        if (rulerPoints.size >= 2) {
+            val lastPoint = rulerPoints[rulerPoints.size - 1]
+            val secondLastPoint = rulerPoints[rulerPoints.size - 2]
+            val distance = FloatArray(1)
+            Location.distanceBetween(
+                secondLastPoint.latitude, secondLastPoint.longitude,
+                lastPoint.latitude, lastPoint.longitude,
+                distance
+            )
+            val start = Location("")
+            start.latitude = secondLastPoint.latitude
+            start.longitude = secondLastPoint.longitude
+            val end = Location("")
+            end.latitude = lastPoint.latitude
+            end.longitude = lastPoint.longitude
+            val bearing = start.bearingTo(end)
+            val info = "Distance: ${"%.2f".format(distance[0] / 1852)} NM\\nBearing: ${"%.1f".format(bearing)}°"
+
+            rulerLine?.remove()
+            rulerLine = mMap.addPolyline(
+                PolylineOptions()
+                    .add(secondLastPoint, lastPoint)
+                    .color(android.graphics.Color.YELLOW)
+                    .width(5f)
+            )
+            Toast.makeText(this, info, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /**
+     * Inflates the options menu.
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
+    /**
+     * Handles the selection of an options menu item.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
+            R.id.action_alarm_settings -> {
+                startActivity(Intent(this, AlarmActivity::class.java))
+                true
+            }
+            R.id.action_channel_settings -> {
+                startActivity(Intent(this, ChannelActivity::class.java))
+                true
+            }
+            R.id.action_select_channel -> {
+                showChannelSelectionDialog()
+                true
+            }
+            R.id.action_language_settings -> {
+                startActivity(Intent(this, LanguageActivity::class.java))
                 true
             }
             R.id.action_about -> {
+                val dialogView = layoutInflater.inflate(R.layout.dialog_about, null)
                 AlertDialog.Builder(this)
-                    .setTitle(R.string.about)
-                    .setMessage("Programa de seguimiento barco - desarrollado por Hdelacruz")
+                    .setView(dialogView)
                     .setPositiveButton("Cerrar") { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
                 true
             }
-            R.id.action_ruler -> {
-                rulerMode = true
-                Toast.makeText(this, "Ruler mode activated. Tap on the map to select two points.", Toast.LENGTH_SHORT).show()
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    /**
+     * Fetches the data for the active channel and schedules the next fetch.
+     */
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
@@ -219,6 +268,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         handler.postDelayed({ fetchData() }, 15000)
     }
 
+    /**
+     * Fetches the data for all channels and updates the map.
+     */
     private fun fetchAllChannelsData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val channels = arrayOf(
@@ -278,7 +330,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             MarkerOptions()
                                 .position(position)
                                 .title("Channel $channel")
-                                .icon(bitmapDescriptorFromVector(this, icon, 52, 52))
+                                .icon(getBitmapDescriptor(R.drawable.purple_triangle))
                                 .rotation(heading)
                                 .anchor(0.5f, 0.5f)
                         )
@@ -318,7 +370,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         clusterManager.cluster()
     }
 
-    // --- Funciones auxiliares convertidas a Kotlin ---
+    /**
+     * Formats an ISO date string to a more readable format.
+     */
     private fun formatDate(iso: String): String {
         return try {
             val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
@@ -337,6 +391,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    /**
+     * Formats a latitude value to a string with degrees and minutes.
+     */
     private fun formatLat(lat: Double): String {
         val hemi = if (lat >= 0) "N" else "S"
         val absLat = kotlin.math.abs(lat)
@@ -345,6 +402,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return String.format(Locale.US, "%02d° %.3f' %s", grados, minutos, hemi)
     }
 
+    /**
+     * Formats a longitude value to a string with degrees and minutes.
+     */
     private fun formatLon(lon: Double): String {
         val hemi = if (lon >= 0) "E" else "W"
         val absLon = kotlin.math.abs(lon)
@@ -353,6 +413,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return String.format(Locale.US, "%03d° %.3f' %s", grados, minutos, hemi)
     }
 
+    /**
+     * Creates a bitmap descriptor from a drawable resource.
+     */
     private fun getBitmapDescriptor(id: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(this, id)!!
         val h = vectorDrawable.intrinsicHeight
@@ -364,15 +427,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(bm)
     }
 
-    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int, width: Int, height: Int): BitmapDescriptor? {
-        return ContextCompat.getDrawable(context, vectorResId)?.run {
-            setBounds(0, 0, width, height)
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            draw(Canvas(bitmap))
-            BitmapDescriptorFactory.fromBitmap(bitmap)
-        }
-    }
-
+    /**
+     * Sets the application's locale.
+     */
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
@@ -381,6 +438,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
+    /**
+     * Called when the activity is destroyed.
+     */
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)

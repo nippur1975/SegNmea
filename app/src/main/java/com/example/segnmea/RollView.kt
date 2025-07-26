@@ -8,6 +8,9 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 
+/**
+ * Custom view that displays the roll of the boat.
+ */
 class RollView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs) {
@@ -45,6 +48,9 @@ class RollView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
+    /**
+     * The roll of the boat in degrees.
+     */
     var roll = 0f
         set(value) {
             field = value

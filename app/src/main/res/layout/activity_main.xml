@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    >
 
     <fragment
         android:id="@+id/map"
@@ -38,6 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Track"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"/>
+
+        <Switch
+            android:id="@+id/rulerSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruler"
             android:textSize="20sp"
             android:layout_marginStart="10dp"/>
 
@@ -113,32 +121,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/zoomContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp">
-
-        <Button
-            android:id="@+id/zoomInButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="+"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/zoomOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="-"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonContainer"
@@ -150,44 +132,73 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="20dp">
 
-        <Button
-            android:id="@+id/channelButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="Channel"
-            android:textColor="@android:color/white" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
+            android:orientation="horizontal"
+            android:background="#1f251d"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:baselineAligned="false">
+            <LinearLayout
                 android:id="@+id/compassButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="@string/compass"
-                android:textColor="@android:color/white" />
-
-            <Button
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_compass"
+                    app:tint="#a5b6a0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/compass"
+                    android:textColor="#a5b6a0"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/clinometerButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
-                android:text="@string/clinometer"
-                android:textColor="@android:color/white" />
-
-            <Button
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_ruler"
+                    app:tint="#a5b6a0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clinometer"
+                    android:textColor="#a5b6a0"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/dataButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
-                android:text="@string/data"
-                android:textColor="@android:color/white" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_list"
+                    app:tint="#a5b6a0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/data"
+                    android:textColor="#a5b6a0"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

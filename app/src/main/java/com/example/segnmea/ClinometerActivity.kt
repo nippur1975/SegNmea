@@ -14,6 +14,9 @@ import com.example.segnmea.databinding.ActivityClinometerBinding
 import org.json.JSONObject
 import java.util.*
 
+/**
+ * Activity that displays the clinometer.
+ */
 class ClinometerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityClinometerBinding
@@ -27,6 +30,7 @@ class ClinometerActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.clinometer)
 
+        // Set up the button click listeners
         binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
@@ -37,14 +41,17 @@ class ClinometerActivity : AppCompatActivity() {
             startActivity(Intent(this, DataActivity::class.java))
         }
 
+        // Fetch the initial data
         fetchData()
     }
 
+    /**
+     * Fetches the clinometer data from the ThingSpeak API.
+     */
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
         rollAlarm = sharedPreferences.getInt("rollAlarm", 30).toFloat()
-        val queue = Volley.newRequestQueue(this)
         val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
 
         val stringRequest = StringRequest(
@@ -61,20 +68,22 @@ class ClinometerActivity : AppCompatActivity() {
                     val pitch = lastFeed.optString("field1", "0").toFloat()
                     val roll = lastFeed.optString("field2", "0").toFloat()
 
-                    // Actualizamos las vistas
+                    // Update the views
                     (binding.pitchImageView as? PitchView)?.pitch = pitch
                     (binding.rollImageView as? RollView)?.roll = roll
-
 
                     checkAlarms(roll)
                 }
             },
             { })
 
-        queue.add(stringRequest)
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
         handler.postDelayed({ fetchData() }, 15000)
     }
 
+    /**
+     * Checks if the roll value exceeds the alarm threshold and plays an alarm sound if it does.
+     */
     private fun checkAlarms(roll: Float) {
         val language = Locale.getDefault().language
 

@@ -15,6 +15,9 @@ import com.android.volley.toolbox.Volley
 import com.example.segnmea.databinding.ActivityDataBinding
 import org.json.JSONObject
 
+/**
+ * Activity that displays the boat's data.
+ */
 class DataActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDataBinding
@@ -27,6 +30,7 @@ class DataActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.data)
 
+        // Set up the button click listeners
         binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
@@ -37,13 +41,16 @@ class DataActivity : AppCompatActivity() {
             startActivity(Intent(this, ClinometerActivity::class.java))
         }
 
+        // Fetch the initial data
         fetchData()
     }
 
+    /**
+     * Fetches the boat's data from the ThingSpeak API.
+     */
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
-        val queue = Volley.newRequestQueue(this)
         val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
 
         val stringRequest = StringRequest(
@@ -95,10 +102,13 @@ class DataActivity : AppCompatActivity() {
             }
         )
 
-        queue.add(stringRequest)
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
         handler.postDelayed({ fetchData() }, 15000)
     }
 
+    /**
+     * Formats a latitude value to a string with degrees and minutes.
+     */
     private fun formatLat(lat: Double): String {
         val hemi = if (lat >= 0) "N" else "S"
         val absLat = kotlin.math.abs(lat)
@@ -107,6 +117,9 @@ class DataActivity : AppCompatActivity() {
         return String.format(Locale.US, "%02d° %.3f' %s", grados, minutos, hemi)
     }
 
+    /**
+     * Formats a longitude value to a string with degrees and minutes.
+     */
     private fun formatLon(lon: Double): String {
         val hemi = if (lon >= 0) "E" else "W"
         val absLon = kotlin.math.abs(lon)

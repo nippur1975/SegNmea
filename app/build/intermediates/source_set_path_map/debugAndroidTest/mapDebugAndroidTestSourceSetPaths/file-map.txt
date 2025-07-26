@@ -1,6 +1,0 @@
-com.example.segnmea.test.app-jetified-annotation-experimental-1.4.0-0 C:\Users\hdelacruz\.gradle\caches\8.13\transforms\61488218b5c38a643a03d86813ba6143\transformed\jetified-annotation-experimental-1.4.0\res
-com.example.segnmea.test.app-jetified-core-1.5.0-1 C:\Users\hdelacruz\.gradle\caches\8.13\transforms\6df5d4b34200aae8cb173ca9e568e9c6\transformed\jetified-core-1.5.0\res
-com.example.segnmea.test.app-androidTest-2 C:\Users\hdelacruz\Desktop\seguimiento\app\build\generated\res\resValues\androidTest\debug
-com.example.segnmea.test.app-mergeDebugAndroidTestResources-3 C:\Users\hdelacruz\Desktop\seguimiento\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-com.example.segnmea.test.app-mergeDebugAndroidTestResources-4 C:\Users\hdelacruz\Desktop\seguimiento\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-com.example.segnmea.test.app-debugAndroidTest-5 C:\Users\hdelacruz\Desktop\seguimiento\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
