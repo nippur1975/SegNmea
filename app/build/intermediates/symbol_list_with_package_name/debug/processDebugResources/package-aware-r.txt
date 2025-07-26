@@ -3039,6 +3039,7 @@ drawable avd_show_password
 drawable barco
 drawable blue_dot
 drawable blue_triangle
+drawable border_top
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -3079,6 +3080,7 @@ drawable design_password_eye
 drawable design_snackbar_background
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
+drawable green_dot
 drawable green_triangle
 drawable ic_arrow_back_black_24
 drawable ic_boat_marker
@@ -3090,7 +3092,10 @@ drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
+drawable ic_compass
+drawable ic_home
 drawable ic_keyboard_black_24dp
+drawable ic_list
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
 drawable ic_m3_chip_close
@@ -3098,6 +3103,7 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_ruler
 drawable ic_search_black_24
 drawable indeterminate_static
 drawable m3_avd_hide_password
@@ -3173,12 +3179,16 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable pitch
+drawable purple_triangle
+drawable red_dot
 drawable red_triangle
 drawable roll
+drawable semitransparent_button
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 drawable yellow_triangle
+font ds_digital
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -3248,6 +3258,7 @@ id action_menu_presenter
 id action_mode_bar
 id action_mode_bar_stub
 id action_mode_close_button
+id action_ruler
 id action_settings
 id action_text
 id actions
@@ -3439,6 +3450,7 @@ id languageButton
 id languageSpinner
 id latTextView
 id layout
+id ledView
 id left
 id leftToRight
 id legacy
@@ -3573,6 +3585,7 @@ id progress_circular
 id progress_horizontal
 id radio
 id ratio
+id realTimeDataTextView
 id rectangles
 id report_drawn
 id reverseSawtooth
@@ -3728,6 +3741,9 @@ id wrap_content
 id wrap_content_constrained
 id x_left
 id x_right
+id zoomContainer
+id zoomInButton
+id zoomOutButton
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer app_bar_elevation_anim_duration
@@ -4137,6 +4153,7 @@ string pitch_alarm_threshold
 string principal
 string roll
 string roll_alarm_threshold
+string ruler
 string save
 string search_menu_title
 string searchbar_scrolling_view_behavior

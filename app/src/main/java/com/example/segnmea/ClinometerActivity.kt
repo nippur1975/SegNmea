@@ -58,10 +58,13 @@ class ClinometerActivity : AppCompatActivity() {
                 val feeds = jsonObject.getJSONArray("feeds")
                 if (feeds.length() > 0) {
                     val lastFeed = feeds.getJSONObject(0)
-                    val roll = lastFeed.getString("field2").toFloat()
+                    val pitch = lastFeed.optString("field1", "0").toFloat()
+                    val roll = lastFeed.optString("field2", "0").toFloat()
 
-                    // Mostramos el valor en un TextView (debes tenerlo en tu XML)
-                    binding.rollValueTextView.text = "Roll: ${"%.1f".format(roll)}°"
+                    // Actualizamos las vistas
+                    (binding.pitchImageView as? PitchView)?.pitch = pitch
+                    (binding.rollImageView as? RollView)?.roll = roll
+
 
                     checkAlarms(roll)
                 }

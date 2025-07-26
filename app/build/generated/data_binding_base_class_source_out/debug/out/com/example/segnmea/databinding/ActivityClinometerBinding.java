@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,7 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.example.segnmea.PitchView;
 import com.example.segnmea.R;
+import com.example.segnmea.RollView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -41,23 +42,16 @@ public final class ActivityClinometerBinding implements ViewBinding {
   public final Button mainButton;
 
   @NonNull
-  public final ImageView pitchImageView;
+  public final PitchView pitchImageView;
 
   @NonNull
-  public final TextView pitchValueTextView;
-
-  @NonNull
-  public final ImageView rollImageView;
-
-  @NonNull
-  public final TextView rollValueTextView;
+  public final RollView rollImageView;
 
   private ActivityClinometerBinding(@NonNull ConstraintLayout rootView,
       @NonNull LinearLayout buttonContainer, @NonNull LinearLayout centerContainer,
       @NonNull TextView channelNameTextView, @NonNull Button compassButton,
-      @NonNull Button dataButton, @NonNull Button mainButton, @NonNull ImageView pitchImageView,
-      @NonNull TextView pitchValueTextView, @NonNull ImageView rollImageView,
-      @NonNull TextView rollValueTextView) {
+      @NonNull Button dataButton, @NonNull Button mainButton, @NonNull PitchView pitchImageView,
+      @NonNull RollView rollImageView) {
     this.rootView = rootView;
     this.buttonContainer = buttonContainer;
     this.centerContainer = centerContainer;
@@ -66,9 +60,7 @@ public final class ActivityClinometerBinding implements ViewBinding {
     this.dataButton = dataButton;
     this.mainButton = mainButton;
     this.pitchImageView = pitchImageView;
-    this.pitchValueTextView = pitchValueTextView;
     this.rollImageView = rollImageView;
-    this.rollValueTextView = rollValueTextView;
   }
 
   @Override
@@ -135,32 +127,20 @@ public final class ActivityClinometerBinding implements ViewBinding {
       }
 
       id = R.id.pitchImageView;
-      ImageView pitchImageView = ViewBindings.findChildViewById(rootView, id);
+      PitchView pitchImageView = ViewBindings.findChildViewById(rootView, id);
       if (pitchImageView == null) {
         break missingId;
       }
 
-      id = R.id.pitchValueTextView;
-      TextView pitchValueTextView = ViewBindings.findChildViewById(rootView, id);
-      if (pitchValueTextView == null) {
-        break missingId;
-      }
-
       id = R.id.rollImageView;
-      ImageView rollImageView = ViewBindings.findChildViewById(rootView, id);
+      RollView rollImageView = ViewBindings.findChildViewById(rootView, id);
       if (rollImageView == null) {
-        break missingId;
-      }
-
-      id = R.id.rollValueTextView;
-      TextView rollValueTextView = ViewBindings.findChildViewById(rootView, id);
-      if (rollValueTextView == null) {
         break missingId;
       }
 
       return new ActivityClinometerBinding((ConstraintLayout) rootView, buttonContainer,
           centerContainer, channelNameTextView, compassButton, dataButton, mainButton,
-          pitchImageView, pitchValueTextView, rollImageView, rollValueTextView);
+          pitchImageView, rollImageView);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

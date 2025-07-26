@@ -1,138 +1,186 @@
 [
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_green_triangle.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/green_triangle.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_pitch.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\pitch.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rose.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compass_rose.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_semitransparent_button.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\semitransparent_button.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compas2.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compas2.png"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_list.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/ic_list.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rose1.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compass_rose1.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_red_triangle.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\red_triangle.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_sentado.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/alarma_sentado.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compass_rosexx.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compass_rosexx.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_barco.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/barco.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_ic_boat_marker.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\ic_boat_marker.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_port_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/port_alarm.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_purple_triangle.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\purple_triangle.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_blue_dot.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/blue_dot.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_red_dot.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\red_dot.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_main.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_main.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_alarm.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_alarm.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_encabuzado.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/alarma_encabuzado.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_stern_alarm.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\stern_alarm.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_roll.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/roll.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_roll.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\roll.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_alarm.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_alarm.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_home.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/ic_home.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_babor.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/alarma_babor.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_barco.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\barco.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/menu_main_menu.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/menu/main_menu.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\menu_main_menu.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\menu\\main_menu.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_roseyy.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compass_roseyy.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_language.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_language.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_alarma_estribor.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/alarma_estribor.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_starboard_alarm.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\starboard_alarm.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_blue_triangle.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/blue_triangle.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_channel.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_channel.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_head_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/head_alarm.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_settings.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_settings.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_compass.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_compass.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_alarma_encabuzado.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\alarma_encabuzado.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compas3.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compas3.png"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_compass.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/ic_compass.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_clinometer.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_clinometer.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_head_alarm.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\head_alarm.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_custom_info_window.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/custom_info_window.xml"
+        "merged": "com.example.segnmea.app-debug-35:/drawable_border_top.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/border_top.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_starboard_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/starboard_alarm.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_blue_dot.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\blue_dot.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_channel.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_channel.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_data.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_data.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_red_triangle.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/red_triangle.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_about.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_about.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/raw_stern_alarm.mp3.flat",
-        "source": "com.example.segnmea.app-main-37:/raw/stern_alarm.mp3"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_green_dot.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\green_dot.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_pitch.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/pitch.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\font_ds_digital.ttf.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\font\\ds_digital.ttf"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_compass_rosexx.png.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/compass_rosexx.png"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compass_rose1.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compass_rose1.png"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_custom_info_window.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\custom_info_window.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compass_rose.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compass_rose.png"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compas2.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compas2.png"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_alarma_estribor.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\alarma_estribor.mp3"
+    },
+    {
+        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_ruler.xml.flat",
+        "source": "com.example.segnmea.app-main-37:/drawable/ic_ruler.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_green_triangle.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\green_triangle.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_blue_triangle.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\blue_triangle.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compas3.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compas3.png"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_clinometer.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_clinometer.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_alarma_sentado.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\alarma_sentado.mp3"
     },
     {
         "merged": "com.example.segnmea.app-debug-35:/layout_activity_data.xml.flat",
         "source": "com.example.segnmea.app-main-37:/layout/activity_data.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_yellow_triangle.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/yellow_triangle.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_compass.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_compass.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_about.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_about.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_alarma_babor.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\alarma_babor.mp3"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_settings.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_settings.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_compass_roseyy.png.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\compass_roseyy.png"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/layout_activity_language.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/layout/activity_language.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.example.segnmea.app-debug-35:/drawable_ic_boat_marker.xml.flat",
-        "source": "com.example.segnmea.app-main-37:/drawable/ic_boat_marker.xml"
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\raw_port_alarm.mp3.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\raw\\port_alarm.mp3"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\drawable_yellow_triangle.xml.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\drawable\\yellow_triangle.xml"
+    },
+    {
+        "merged": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-debug-35:\\font_ds_digital.TTF.flat",
+        "source": "C:\\Users\\hdelacruz\\.gradle\\daemon\\8.13\\com.example.segnmea.app-main-37:\\font\\ds_digital.TTF"
     }
 ]

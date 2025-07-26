@@ -1,4 +1,4 @@
-#Fri Jul 25 14:23:36 PET 2025
+#Fri Jul 25 16:05:52 PET 2025
 base.1=C\:\\Users\\hdelacruz\\Desktop\\seguimiento\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
 path.1=0/classes.dex
 base.0=C\:\\Users\\hdelacruz\\Desktop\\seguimiento\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeExtDexDebugAndroidTest\\classes.dex

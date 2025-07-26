@@ -18,4 +18,5 @@
     <string name="about">About</string>
     <string name="language">Language</string>
     <string name="settings_alarms">Alarm Settings</string>
+    <string name="ruler">Ruler</string>
 </resources>

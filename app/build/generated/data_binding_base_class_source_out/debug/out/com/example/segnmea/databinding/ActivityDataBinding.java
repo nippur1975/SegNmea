@@ -4,11 +4,10 @@ package com.example.segnmea.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.segnmea.R;
@@ -18,16 +17,16 @@ import java.lang.String;
 
 public final class ActivityDataBinding implements ViewBinding {
   @NonNull
-  private final ConstraintLayout rootView;
+  private final LinearLayout rootView;
 
   @NonNull
   public final TextView channelNameTextView;
 
   @NonNull
-  public final Button clinometerButton;
+  public final LinearLayout clinometerButton;
 
   @NonNull
-  public final Button compassButton;
+  public final LinearLayout compassButton;
 
   @NonNull
   public final TextView headingTextView;
@@ -39,10 +38,13 @@ public final class ActivityDataBinding implements ViewBinding {
   public final TextView lonTextView;
 
   @NonNull
-  public final Button mainButton;
+  public final LinearLayout mainButton;
 
   @NonNull
   public final TextView pitchTextView;
+
+  @NonNull
+  public final TextView realTimeDataTextView;
 
   @NonNull
   public final TextView rollTextView;
@@ -50,12 +52,12 @@ public final class ActivityDataBinding implements ViewBinding {
   @NonNull
   public final TextView speedTextView;
 
-  private ActivityDataBinding(@NonNull ConstraintLayout rootView,
-      @NonNull TextView channelNameTextView, @NonNull Button clinometerButton,
-      @NonNull Button compassButton, @NonNull TextView headingTextView,
-      @NonNull TextView latTextView, @NonNull TextView lonTextView, @NonNull Button mainButton,
-      @NonNull TextView pitchTextView, @NonNull TextView rollTextView,
-      @NonNull TextView speedTextView) {
+  private ActivityDataBinding(@NonNull LinearLayout rootView, @NonNull TextView channelNameTextView,
+      @NonNull LinearLayout clinometerButton, @NonNull LinearLayout compassButton,
+      @NonNull TextView headingTextView, @NonNull TextView latTextView,
+      @NonNull TextView lonTextView, @NonNull LinearLayout mainButton,
+      @NonNull TextView pitchTextView, @NonNull TextView realTimeDataTextView,
+      @NonNull TextView rollTextView, @NonNull TextView speedTextView) {
     this.rootView = rootView;
     this.channelNameTextView = channelNameTextView;
     this.clinometerButton = clinometerButton;
@@ -65,13 +67,14 @@ public final class ActivityDataBinding implements ViewBinding {
     this.lonTextView = lonTextView;
     this.mainButton = mainButton;
     this.pitchTextView = pitchTextView;
+    this.realTimeDataTextView = realTimeDataTextView;
     this.rollTextView = rollTextView;
     this.speedTextView = speedTextView;
   }
 
   @Override
   @NonNull
-  public ConstraintLayout getRoot() {
+  public LinearLayout getRoot() {
     return rootView;
   }
 
@@ -103,13 +106,13 @@ public final class ActivityDataBinding implements ViewBinding {
       }
 
       id = R.id.clinometerButton;
-      Button clinometerButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout clinometerButton = ViewBindings.findChildViewById(rootView, id);
       if (clinometerButton == null) {
         break missingId;
       }
 
       id = R.id.compassButton;
-      Button compassButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout compassButton = ViewBindings.findChildViewById(rootView, id);
       if (compassButton == null) {
         break missingId;
       }
@@ -133,7 +136,7 @@ public final class ActivityDataBinding implements ViewBinding {
       }
 
       id = R.id.mainButton;
-      Button mainButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout mainButton = ViewBindings.findChildViewById(rootView, id);
       if (mainButton == null) {
         break missingId;
       }
@@ -141,6 +144,12 @@ public final class ActivityDataBinding implements ViewBinding {
       id = R.id.pitchTextView;
       TextView pitchTextView = ViewBindings.findChildViewById(rootView, id);
       if (pitchTextView == null) {
+        break missingId;
+      }
+
+      id = R.id.realTimeDataTextView;
+      TextView realTimeDataTextView = ViewBindings.findChildViewById(rootView, id);
+      if (realTimeDataTextView == null) {
         break missingId;
       }
 
@@ -156,9 +165,9 @@ public final class ActivityDataBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityDataBinding((ConstraintLayout) rootView, channelNameTextView,
-          clinometerButton, compassButton, headingTextView, latTextView, lonTextView, mainButton,
-          pitchTextView, rollTextView, speedTextView);
+      return new ActivityDataBinding((LinearLayout) rootView, channelNameTextView, clinometerButton,
+          compassButton, headingTextView, latTextView, lonTextView, mainButton, pitchTextView,
+          realTimeDataTextView, rollTextView, speedTextView);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

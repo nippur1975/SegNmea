@@ -70,7 +70,7 @@ class CompassActivity : AppCompatActivity() {
                         }
 
                         // Rotar suavemente la rosa
-                        rotateCompass(-headingValue)
+                        rotateCompass(headingValue)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -86,20 +86,7 @@ class CompassActivity : AppCompatActivity() {
     }
 
     private fun rotateCompass(targetRotation: Float) {
-        var normalizedTarget = targetRotation % 360
-        var normalizedCurrent = currentRotation % 360
-
-        var delta = normalizedTarget - normalizedCurrent
-        if (delta > 180) delta -= 360
-        if (delta < -180) delta += 360
-        normalizedTarget = normalizedCurrent + delta
-
-        val animator = ObjectAnimator.ofFloat(binding.compassRose, "rotation", currentRotation, normalizedTarget)
-        animator.duration = 1000
-        animator.interpolator = LinearInterpolator()
-        animator.start()
-
-        currentRotation = normalizedTarget
+        (binding.compassRose as? CompassView)?.compassRotation = targetRotation
     }
 
     private fun animateHeadingText(newText: String) {

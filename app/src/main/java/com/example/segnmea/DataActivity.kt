@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -46,33 +49,70 @@ class DataActivity : AppCompatActivity() {
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
-                val jsonObject = JSONObject(response)
-                val channelObject = jsonObject.getJSONObject("channel")
-                val channelName = channelObject.getString("name")
-                binding.channelNameTextView.text = channelName
+                try {
+                    val jsonObject = JSONObject(response)
+                    val channelObject = jsonObject.getJSONObject("channel")
+                    val channelName = channelObject.optString("name", "Unknown Channel")
+                    binding.channelNameTextView.text = channelName
 
-                val feeds = jsonObject.getJSONArray("feeds")
-                if (feeds.length() > 0) {
-                    val lastFeed = feeds.getJSONObject(0)
-                    val lat = lastFeed.getString("field3")
-                    val lon = lastFeed.getString("field4")
-                    val speed = lastFeed.getString("field5")
-                    val heading = lastFeed.getString("field6")
-                    val pitch = lastFeed.getString("field1")
-                    val roll = lastFeed.getString("field2")
+                    val feeds = jsonObject.optJSONArray("feeds")
+                    if (feeds != null && feeds.length() > 0) {
+                        val lastFeed = feeds.getJSONObject(0)
 
-                    binding.latTextView.text = "Lat: $lat"
-                    binding.lonTextView.text = "Lon: $lon"
-                    binding.speedTextView.text = "Speed: $speed Kn"
-                    binding.headingTextView.text = "Heading: $heading°"
-                    binding.pitchTextView.text = "Pitch: $pitch°"
-                    binding.rollTextView.text = "Roll: $roll°"
+                        val pitch = lastFeed.optString("field1", "0").toFloatOrNull() ?: 0f
+                        val roll = lastFeed.optString("field2", "0").toFloatOrNull() ?: 0f
+                        val lat = lastFeed.optString("field3", "0").toDoubleOrNull() ?: 0.0
+                        val lon = lastFeed.optString("field4", "0").toDoubleOrNull() ?: 0.0
+                        val speed = lastFeed.optString("field5", "0").toFloatOrNull() ?: 0f
+                        val heading = lastFeed.optString("field6", "0").toFloatOrNull() ?: 0f
+
+                        binding.pitchTextView.text = "%.1f°".format(pitch)
+                        binding.rollTextView.text = "%.1f°".format(roll)
+                        binding.latTextView.text = formatLat(lat)
+                        binding.lonTextView.text = formatLon(lon)
+                        binding.speedTextView.text = "%.1f knots".format(speed)
+                        binding.headingTextView.text = "${heading.toInt()}°"
+
+                        val createdAt = lastFeed.optString("created_at", null)
+                        if (createdAt != null) {
+                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            val date = sdf.parse(createdAt)
+                            if (date != null) {
+                                val outFormat = SimpleDateFormat("HH:mm   dd-MM-yyyy", Locale.US)
+                                outFormat.timeZone = TimeZone.getDefault()
+                                binding.realTimeDataTextView.text =
+                                    "Real-Time Data: ${outFormat.format(date)}"
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             },
-            { })
+            { error ->
+                error.printStackTrace()
+            }
+        )
 
         queue.add(stringRequest)
-
         handler.postDelayed({ fetchData() }, 15000)
     }
+
+    private fun formatLat(lat: Double): String {
+        val hemi = if (lat >= 0) "N" else "S"
+        val absLat = kotlin.math.abs(lat)
+        val grados = absLat.toInt()
+        val minutos = (absLat - grados) * 60
+        return String.format(Locale.US, "%02d° %.3f' %s", grados, minutos, hemi)
+    }
+
+    private fun formatLon(lon: Double): String {
+        val hemi = if (lon >= 0) "E" else "W"
+        val absLon = kotlin.math.abs(lon)
+        val grados = absLon.toInt()
+        val minutos = (absLon - grados) * 60
+        return String.format(Locale.US, "%03d° %.3f' %s", grados, minutos, hemi)
+    }
 }
+

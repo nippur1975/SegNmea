@@ -5,12 +5,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
@@ -38,6 +40,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var currentZoom = 15f
     private var currentMarker: Marker? = null
     private lateinit var clusterManager: ClusterManager<MyClusterItem>
+    private var rulerMode = false
+    private val rulerPoints = mutableListOf<LatLng>()
+    private var rulerLine: Polyline? = null
+    private var rulerMarkers = mutableListOf<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +66,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         binding.dataButton.setOnClickListener {
             startActivity(Intent(this, DataActivity::class.java))
+        }
+
+        binding.zoomInButton.setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.zoomIn())
+        }
+
+        binding.zoomOutButton.setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.zoomOut())
         }
 
         binding.channelButton.setOnClickListener {
@@ -96,11 +110,60 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
-        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = false
 
         clusterManager = ClusterManager(this, mMap)
         mMap.setOnCameraIdleListener(clusterManager)
         mMap.setOnMarkerClickListener(clusterManager)
+
+        mMap.setOnMapClickListener { latLng ->
+            if (rulerMode) {
+                if (rulerPoints.size < 2) {
+                    rulerPoints.add(latLng)
+                    val marker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title("Point ${rulerPoints.size}")
+                    )
+                    if (marker != null) {
+                        rulerMarkers.add(marker)
+                    }
+
+                    if (rulerPoints.size == 2) {
+                        val distance = FloatArray(1)
+                        Location.distanceBetween(
+                            rulerPoints[0].latitude, rulerPoints[0].longitude,
+                            rulerPoints[1].latitude, rulerPoints[1].longitude,
+                            distance
+                        )
+                        val start = Location("")
+                        start.latitude = rulerPoints[0].latitude
+                        start.longitude = rulerPoints[0].longitude
+                        val end = Location("")
+                        end.latitude = rulerPoints[1].latitude
+                        end.longitude = rulerPoints[1].longitude
+                        val bearing = start.bearingTo(end)
+                        val info = "Distance: ${"%.2f".format(distance[0] / 1852)} NM\\nBearing: ${"%.1f".format(bearing)}°"
+
+                        rulerLine = mMap.addPolyline(
+                            PolylineOptions()
+                                .add(rulerPoints[0], rulerPoints[1])
+                                .color(android.graphics.Color.YELLOW)
+                                .width(5f)
+                        )
+                        Toast.makeText(this, info, Toast.LENGTH_LONG).show()
+
+                        handler.postDelayed({
+                            rulerLine?.remove()
+                            rulerMarkers.forEach { it.remove() }
+                            rulerPoints.clear()
+                            rulerMarkers.clear()
+                            rulerMode = false
+                        }, 30000)
+                    }
+                }
+            }
+        }
 
         binding.compassButton.post {
             val buttonContainerHeight = binding.compassButton.height
@@ -140,6 +203,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     .show()
                 true
             }
+            R.id.action_ruler -> {
+                rulerMode = true
+                Toast.makeText(this, "Ruler mode activated. Tap on the map to select two points.", Toast.LENGTH_SHORT).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -159,8 +227,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             sharedPreferences.getString("channel3", "3017966")!!,
             sharedPreferences.getString("channel4", "3017982")!!
         )
-        val icons = arrayOf(R.drawable.green_triangle, R.drawable.blue_triangle, R.drawable.red_triangle, R.drawable.yellow_triangle)
-        val trackColors = arrayOf(android.graphics.Color.GREEN, android.graphics.Color.BLUE, android.graphics.Color.RED, android.graphics.Color.YELLOW)
+        val icons = arrayOf(R.drawable.purple_triangle, R.drawable.blue_triangle, R.drawable.red_triangle, R.drawable.yellow_triangle)
+        val trackColors = arrayOf(0xFF800080.toInt(), android.graphics.Color.BLUE, android.graphics.Color.RED, android.graphics.Color.YELLOW)
 
         mMap.clear()
         clusterManager.clearItems()
@@ -210,7 +278,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             MarkerOptions()
                                 .position(position)
                                 .title("Channel $channel")
-                                .icon(bitmapDescriptorFromVector(this, icon, 50, 50))
+                                .icon(bitmapDescriptorFromVector(this, icon, 52, 52))
                                 .rotation(heading)
                                 .anchor(0.5f, 0.5f)
                         )
@@ -229,6 +297,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             binding.pitchTextView.text = "${getString(R.string.pitch)} : ${"%.1f".format(pitch.toFloat())}°"
                             binding.rollTextView.text = "${getString(R.string.roll)} : ${"%.1f".format(roll.toFloat())}°"
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, currentZoom))
+
+                            val createdAt = lastFeed.getString("created_at")
+                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            val date = sdf.parse(createdAt)
+                            val now = Date()
+                            val diff = now.time - date.time
+                            if (diff < 60000) {
+                                binding.ledView.setBackgroundResource(R.drawable.green_dot)
+                            } else {
+                                binding.ledView.setBackgroundResource(R.drawable.red_dot)
+                            }
                         }
                     }
                 },

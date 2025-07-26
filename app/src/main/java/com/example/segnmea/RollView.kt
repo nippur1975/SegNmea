@@ -19,10 +19,12 @@ class RollView @JvmOverloads constructor(
     }
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.BLACK
-        textSize = 40f
+        color = Color.WHITE
+        textSize = 160f
         textAlign = Paint.Align.CENTER
+        isFakeBoldText = true
     }
+
 
     private val tickPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
@@ -32,6 +34,9 @@ class RollView @JvmOverloads constructor(
     private val arrowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
+
+    private val rollBitmap = (context.getDrawable(R.drawable.roll) as? android.graphics.drawable.BitmapDrawable)?.bitmap
+    private val rollPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val letterPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.BLACK
@@ -51,52 +56,57 @@ class RollView @JvmOverloads constructor(
 
         val centerX = width / 2f
         val centerY = height / 2f
-        val radius = (width.coerceAtMost(height) / 2f) * 0.8f
+        val radius = (width.coerceAtMost(height) / 2f)
+
+        // Draw the background image
+        rollBitmap?.let {
+            val shader = android.graphics.BitmapShader(it, android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP)
+            val matrix = android.graphics.Matrix()
+            val scale = (radius * 2) / it.width.toFloat()
+            matrix.setScale(scale, scale)
+            matrix.postTranslate(centerX - (it.width * scale) / 2f, centerY - (it.height * scale) / 2f)
+            shader.setLocalMatrix(matrix)
+            rollPaint.shader = shader
+        }
+        canvas.save()
+        canvas.rotate(roll, centerX, centerY)
+        canvas.drawCircle(centerX, centerY, radius, rollPaint)
+        canvas.restore()
 
         // Draw the circle
         canvas.drawCircle(centerX, centerY, radius, circlePaint)
 
-        // Draw the tick marks and labels
-        for (i in -90..90 step 30) {
-            val angleRad = Math.toRadians(i.toDouble()).toFloat()
-            val startX = centerX + radius * kotlin.math.cos(angleRad)
-            val startY = centerY + radius * kotlin.math.sin(angleRad)
-            val endX = centerX + (radius + 20) * kotlin.math.cos(angleRad)
-            val endY = centerY + (radius + 20) * kotlin.math.sin(angleRad)
-            canvas.drawLine(startX, startY, endX, endY, tickPaint)
-            val label = "${kotlin.math.abs(i)}°"
-            val textX = centerX + (radius + 50) * kotlin.math.cos(angleRad)
-            val textY = centerY + (radius + 50) * kotlin.math.sin(angleRad)
-            canvas.drawText(label, textX, textY, textPaint)
-        }
 
         // Draw the roll value
-        val textY = centerY + 40
+        val textY = centerY + 80
         canvas.drawText("${"%.1f".format(roll)}°", centerX, textY, textPaint)
 
         // Draw the arrow and letter
         val arrowPath = Path()
         if (roll > 0) {
             arrowPaint.color = Color.GREEN
-            arrowPath.moveTo(centerX + 40, textY - 30)
-            arrowPath.lineTo(centerX + 60, textY - 20)
-            arrowPath.lineTo(centerX + 40, textY - 10)
+            arrowPaint.style = Paint.Style.STROKE
+            arrowPaint.strokeWidth = 10f
+            arrowPath.moveTo(centerX + 160, textY - 100)
+            arrowPath.lineTo(centerX + 200, textY - 80)
+            arrowPath.lineTo(centerX + 160, textY - 60)
             arrowPath.close()
-            canvas.drawText("S", centerX + 80, textY, letterPaint)
+            letterPaint.color = Color.GREEN
+            letterPaint.textSize = 160f
+            canvas.drawText("S", centerX, textY + 160, letterPaint)
         } else if (roll < 0) {
             arrowPaint.color = Color.RED
-            arrowPath.moveTo(centerX - 40, textY - 10)
-            arrowPath.lineTo(centerX - 60, textY - 20)
-            arrowPath.lineTo(centerX - 40, textY - 30)
+            arrowPaint.style = Paint.Style.STROKE
+            arrowPaint.strokeWidth = 10f
+            arrowPath.moveTo(centerX - 160, textY - 60)
+            arrowPath.lineTo(centerX - 200, textY - 80)
+            arrowPath.lineTo(centerX - 160, textY - 100)
             arrowPath.close()
-            canvas.drawText("P", centerX - 80, textY, letterPaint)
+            letterPaint.color = Color.RED
+            letterPaint.textSize = 160f
+            canvas.drawText("P", centerX, textY + 160, letterPaint)
         }
         canvas.drawPath(arrowPath, arrowPaint)
 
-        // Draw the rotating indicator
-        canvas.save()
-        canvas.rotate(roll, centerX, centerY)
-        canvas.drawLine(centerX, centerY - radius, centerX, centerY + radius, circlePaint)
-        canvas.restore()
     }
 }
