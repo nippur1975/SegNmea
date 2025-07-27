@@ -4,7 +4,6 @@ package com.example.segnmea.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -33,13 +32,13 @@ public final class ActivityClinometerBinding implements ViewBinding {
   public final TextView channelNameTextView;
 
   @NonNull
-  public final Button compassButton;
+  public final LinearLayout compassButton;
 
   @NonNull
-  public final Button dataButton;
+  public final LinearLayout dataButton;
 
   @NonNull
-  public final Button mainButton;
+  public final LinearLayout mainButton;
 
   @NonNull
   public final PitchView pitchImageView;
@@ -49,9 +48,9 @@ public final class ActivityClinometerBinding implements ViewBinding {
 
   private ActivityClinometerBinding(@NonNull ConstraintLayout rootView,
       @NonNull LinearLayout buttonContainer, @NonNull LinearLayout centerContainer,
-      @NonNull TextView channelNameTextView, @NonNull Button compassButton,
-      @NonNull Button dataButton, @NonNull Button mainButton, @NonNull PitchView pitchImageView,
-      @NonNull RollView rollImageView) {
+      @NonNull TextView channelNameTextView, @NonNull LinearLayout compassButton,
+      @NonNull LinearLayout dataButton, @NonNull LinearLayout mainButton,
+      @NonNull PitchView pitchImageView, @NonNull RollView rollImageView) {
     this.rootView = rootView;
     this.buttonContainer = buttonContainer;
     this.centerContainer = centerContainer;
@@ -109,19 +108,19 @@ public final class ActivityClinometerBinding implements ViewBinding {
       }
 
       id = R.id.compassButton;
-      Button compassButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout compassButton = ViewBindings.findChildViewById(rootView, id);
       if (compassButton == null) {
         break missingId;
       }
 
       id = R.id.dataButton;
-      Button dataButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout dataButton = ViewBindings.findChildViewById(rootView, id);
       if (dataButton == null) {
         break missingId;
       }
 
       id = R.id.mainButton;
-      Button mainButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout mainButton = ViewBindings.findChildViewById(rootView, id);
       if (mainButton == null) {
         break missingId;
       }

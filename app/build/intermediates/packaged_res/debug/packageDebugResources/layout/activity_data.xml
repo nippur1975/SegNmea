@@ -66,13 +66,13 @@
                 android:layout_height="wrap_content"
                 android:text="Pitch"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/pitchTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -88,13 +88,13 @@
                 android:layout_height="wrap_content"
                 android:text="Roll"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/rollTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -110,13 +110,13 @@
                 android:layout_height="wrap_content"
                 android:text="Latitude"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/latTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -132,13 +132,13 @@
                 android:layout_height="wrap_content"
                 android:text="Longitude"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/lonTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -154,13 +154,13 @@
                 android:layout_height="wrap_content"
                 android:text="Speed"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/speedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -176,13 +176,13 @@
                 android:layout_height="wrap_content"
                 android:text="Heading"
                 android:textColor="#a5b6a0"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/headingTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp" />
         </LinearLayout>
     </GridLayout>
 

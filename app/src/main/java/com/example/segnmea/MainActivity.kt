@@ -13,9 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.example.segnmea.databinding.ActivityMainBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -82,7 +79,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.trackSwitch.setOnCheckedChangeListener { _, isChecked ->
-            markerToTrackPointMap.keys.forEach { it.isVisible = isChecked }
+            if (isChecked) {
+                historicalData.forEach { (channelId, trackPoints) ->
+                    trackPoints.forEach { trackPoint ->
+                        val historicalMarker = map.addMarker(
+                            MarkerOptions()
+                                .position(trackPoint.getPosition())
+                                .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_historical_marker, 0xFF0000FF.toInt())!!)) // Azul
+                                .anchor(0.5f, 0.5f)
+                        )
+                        if (historicalMarker != null) {
+                            markerToTrackPointMap[historicalMarker] = trackPoint
+                        }
+                    }
+                }
+            } else {
+                markerToTrackPointMap.keys.forEach { it.remove() }
+                markerToTrackPointMap.clear()
+            }
         }
 
         binding.rulerSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -204,11 +218,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val points = mutableListOf<LatLng>()
             val historicalDataForChannel = historicalData[channelId] ?: mutableListOf()
             historicalDataForChannel.clear()
-            markerToTrackPointMap.keys.filter { markerToTrackPointMap[it]?.let { channels.indexOf(channelId) } != -1 }.forEach {
-                it.remove()
-                markerToTrackPointMap.remove(it)
-            }
-
             for (i in 0 until feeds.length()) {
                 val feed = feeds.getJSONObject(i)
                 val lat = feed.optString("field3", "0")
@@ -312,134 +321,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun fetchLastData() {
-        val url = "https://api.thingspeak.com/channels/$currentChannel/feeds/last.json"
-        val queue = Volley.newRequestQueue(this)
-
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                try {
-                    val jsonObject = JSONObject(response)
-                    val feeds = jsonObject
-
-                    // Mapeo de campos (según tu especificación)
-                    val pitch = feeds.optString("field1", "0")  // PITCH
-                    val roll = feeds.optString("field2", "0")   // ROLL
-                    val lat = feeds.optString("field3", "0")    // LAT
-                    val lon = feeds.optString("field4", "0")    // LON
-                    val speed = feeds.optString("field5", "0")  // VELOCIDAD
-                    val heading = feeds.optString("field6", "0")// RUMBO
-
-                    val latitude = lat.toDoubleOrNull() ?: 0.0
-                    val longitude = lon.toDoubleOrNull() ?: 0.0
-                    val position = LatLng(latitude, longitude)
-
-                    updateUI(lat, lon, speed, heading, pitch, roll)
-
-                    if (latitude != 0.0 && longitude != 0.0) {
-
-                        if (boatMarker == null) {
-                            boatMarker = map.addMarker(
-                                MarkerOptions()
-                                    .position(position)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_boat_marker, 0xFF000000.toInt())!!)) // Negro
-                                    .rotation(heading.toFloat())
-                                    .anchor(0.5f, 0.5f)
-                            )
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15f))
-                        } else {
-                            boatMarker?.position = position
-                            boatMarker?.rotation = heading.toFloat()
-                        }
-                    }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            },
-            { error -> error.printStackTrace() })
-
-        queue.add(stringRequest)
-    }
-
-    private fun fetchHistoricalData() {
-        val url = "https://api.thingspeak.com/channels/$currentChannel/feeds.json?results=2000"
-        val queue = Volley.newRequestQueue(this)
-
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                try {
-                    val jsonObject = JSONObject(response)
-                    val feeds = jsonObject.getJSONArray("feeds")
-
-                    val points = mutableListOf<LatLng>()
-                    historicalMarkers.forEach { it.remove() }
-                    historicalMarkers.clear()
-
-                    for (i in 0 until feeds.length()) {
-                        val feed = feeds.getJSONObject(i)
-                        val lat = feed.optString("field3", "0")
-                        val lon = feed.optString("field4", "0")
-                        val latitude = lat.toDoubleOrNull() ?: 0.0
-                        val longitude = lon.toDoubleOrNull() ?: 0.0
-
-                        if (latitude != 0.0 && longitude != 0.0) {
-                            val position = LatLng(latitude, longitude)
-                            points.add(position)
-
-                            val historicalMarker = map.addMarker(
-                                MarkerOptions()
-                                    .position(position)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_historical_marker, 0xFF808080.toInt())!!)) // Gris
-                                    .anchor(0.5f, 0.5f)
-                            )
-                            if (historicalMarker != null) {
-                                historicalMarker.isVisible = binding.trackSwitch.isChecked
-                                historicalMarkers.add(historicalMarker)
-                            }
-                        }
-                    }
-                    trackPolyline.points = points
-
-                    if (feeds.length() > 0) {
-                        val lastFeed = feeds.getJSONObject(feeds.length() - 1)
-                        val pitch = lastFeed.optString("field1", "0")
-                        val roll = lastFeed.optString("field2", "0")
-                        val lat = lastFeed.optString("field3", "0")
-                        val lon = lastFeed.optString("field4", "0")
-                        val speed = lastFeed.optString("field5", "0")
-                        val heading = lastFeed.optString("field6", "0")
-                        val latitude = lat.toDoubleOrNull() ?: 0.0
-                        val longitude = lon.toDoubleOrNull() ?: 0.0
-                        val position = LatLng(latitude, longitude)
-
-                        updateUI(lat, lon, speed, heading, pitch, roll)
-
-                        if (boatMarker == null) {
-                            boatMarker = map.addMarker(
-                                MarkerOptions()
-                                    .position(position)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_boat_marker, 0xFF000000.toInt())!!)) // Negro
-                                    .rotation(heading.toFloat())
-                                    .anchor(0.5f, 0.5f)
-                            )
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15f))
-                        } else {
-                            boatMarker?.position = position
-                            boatMarker?.rotation = heading.toFloat()
-                        }
-                    }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            },
-            { error -> error.printStackTrace() })
-
-        queue.add(stringRequest)
-    }
 
     private fun updateUI(lat: String, lon: String, speed: String, heading: String, pitch: String, roll: String) {
         // Formateo de coordenadas

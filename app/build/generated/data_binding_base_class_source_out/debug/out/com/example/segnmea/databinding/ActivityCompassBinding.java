@@ -4,7 +4,6 @@ package com.example.segnmea.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -26,35 +25,30 @@ public final class ActivityCompassBinding implements ViewBinding {
   public final TextView channelNameTextView;
 
   @NonNull
-  public final Button clinometerButton;
+  public final LinearLayout clinometerButton;
 
   @NonNull
   public final CompassView compassRose;
 
   @NonNull
-  public final Button dataButton;
+  public final LinearLayout dataButton;
 
   @NonNull
   public final TextView headingValueTextView;
 
   @NonNull
-  public final LinearLayout linearLayout;
-
-  @NonNull
-  public final Button mainButton;
+  public final LinearLayout mainButton;
 
   private ActivityCompassBinding(@NonNull ConstraintLayout rootView,
-      @NonNull TextView channelNameTextView, @NonNull Button clinometerButton,
-      @NonNull CompassView compassRose, @NonNull Button dataButton,
-      @NonNull TextView headingValueTextView, @NonNull LinearLayout linearLayout,
-      @NonNull Button mainButton) {
+      @NonNull TextView channelNameTextView, @NonNull LinearLayout clinometerButton,
+      @NonNull CompassView compassRose, @NonNull LinearLayout dataButton,
+      @NonNull TextView headingValueTextView, @NonNull LinearLayout mainButton) {
     this.rootView = rootView;
     this.channelNameTextView = channelNameTextView;
     this.clinometerButton = clinometerButton;
     this.compassRose = compassRose;
     this.dataButton = dataButton;
     this.headingValueTextView = headingValueTextView;
-    this.linearLayout = linearLayout;
     this.mainButton = mainButton;
   }
 
@@ -92,7 +86,7 @@ public final class ActivityCompassBinding implements ViewBinding {
       }
 
       id = R.id.clinometerButton;
-      Button clinometerButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout clinometerButton = ViewBindings.findChildViewById(rootView, id);
       if (clinometerButton == null) {
         break missingId;
       }
@@ -104,7 +98,7 @@ public final class ActivityCompassBinding implements ViewBinding {
       }
 
       id = R.id.dataButton;
-      Button dataButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout dataButton = ViewBindings.findChildViewById(rootView, id);
       if (dataButton == null) {
         break missingId;
       }
@@ -115,21 +109,14 @@ public final class ActivityCompassBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.linearLayout;
-      LinearLayout linearLayout = ViewBindings.findChildViewById(rootView, id);
-      if (linearLayout == null) {
-        break missingId;
-      }
-
       id = R.id.mainButton;
-      Button mainButton = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout mainButton = ViewBindings.findChildViewById(rootView, id);
       if (mainButton == null) {
         break missingId;
       }
 
       return new ActivityCompassBinding((ConstraintLayout) rootView, channelNameTextView,
-          clinometerButton, compassRose, dataButton, headingValueTextView, linearLayout,
-          mainButton);
+          clinometerButton, compassRose, dataButton, headingValueTextView, mainButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Rosa circular llenando todo el espacio -->
+    <!-- Rosa circular centrada -->
     <com.example.segnmea.CompassView
         android:id="@+id/compassRose"
         android:layout_width="400dp"
@@ -28,49 +28,94 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Valor numérico (sin fondo) -->
     <TextView
         android:id="@+id/headingValueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
         android:fontFamily="@font/ds_digital"
         android:padding="10dp"
         android:textColor="@android:color/holo_red_dark"
-        android:textSize="90sp"
+        android:textSize="100sp"
         app:layout_constraintTop_toTopOf="@id/compassRose"
         app:layout_constraintBottom_toBottomOf="@id/compassRose"
         app:layout_constraintStart_toStartOf="@id/compassRose"
         app:layout_constraintEnd_toEndOf="@id/compassRose" />
 
+    <!-- Barra inferior de botones -->
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="#1f251d"
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:baselineAligned="false"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
+        <LinearLayout
             android:id="@+id/mainButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/principal" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home"
+                app:tint="@android:color/white" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Main"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-        <Button
+       
+
+        <LinearLayout
             android:id="@+id/clinometerButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/clinometer" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_ruler"
+                app:tint="#a5b6a0" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clinometer"
+                android:textColor="#a5b6a0"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/dataButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/data" />
+        <LinearLayout
+                android:id="@+id/dataButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_list"
+                    app:tint="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/data"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

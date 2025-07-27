@@ -3465,7 +3465,6 @@ id light
 id line1
 id line3
 id linear
-id linearLayout
 id listMode
 id list_item
 id lonTextView
@@ -3957,7 +3956,6 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
-menu activity_main
 menu menu_main
 plurals mtrl_badge_content_description
 raw alarma_babor

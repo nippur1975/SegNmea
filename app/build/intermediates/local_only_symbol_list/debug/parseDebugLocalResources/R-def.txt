@@ -62,7 +62,6 @@ id headingValueTextView
 id languageButton
 id languageSpinner
 id latTextView
-id linearLayout
 id lonTextView
 id mainButton
 id map
@@ -92,7 +91,6 @@ layout activity_main
 layout activity_settings
 layout custom_info_window
 layout dialog_about
-menu activity_main
 menu menu_main
 raw alarma_babor
 raw alarma_encabuzado
