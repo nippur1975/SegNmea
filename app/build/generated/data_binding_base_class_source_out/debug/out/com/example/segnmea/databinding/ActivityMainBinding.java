@@ -52,6 +52,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView rollTextView;
 
   @NonNull
+  public final TextView rulerInfoTextView;
+
+  @NonNull
   public final Switch rulerSwitch;
 
   @NonNull
@@ -65,8 +68,8 @@ public final class ActivityMainBinding implements ViewBinding {
       @NonNull LinearLayout clinometerButton, @NonNull LinearLayout compassButton,
       @NonNull LinearLayout dataButton, @NonNull TextView headingTextView,
       @NonNull TextView latTextView, @NonNull TextView lonTextView, @NonNull TextView pitchTextView,
-      @NonNull TextView rollTextView, @NonNull Switch rulerSwitch, @NonNull TextView speedTextView,
-      @NonNull Switch trackSwitch) {
+      @NonNull TextView rollTextView, @NonNull TextView rulerInfoTextView,
+      @NonNull Switch rulerSwitch, @NonNull TextView speedTextView, @NonNull Switch trackSwitch) {
     this.rootView = rootView;
     this.buttonContainer = buttonContainer;
     this.channelNameTextView = channelNameTextView;
@@ -78,6 +81,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.lonTextView = lonTextView;
     this.pitchTextView = pitchTextView;
     this.rollTextView = rollTextView;
+    this.rulerInfoTextView = rulerInfoTextView;
     this.rulerSwitch = rulerSwitch;
     this.speedTextView = speedTextView;
     this.trackSwitch = trackSwitch;
@@ -170,6 +174,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.rulerInfoTextView;
+      TextView rulerInfoTextView = ViewBindings.findChildViewById(rootView, id);
+      if (rulerInfoTextView == null) {
+        break missingId;
+      }
+
       id = R.id.rulerSwitch;
       Switch rulerSwitch = ViewBindings.findChildViewById(rootView, id);
       if (rulerSwitch == null) {
@@ -190,8 +200,8 @@ public final class ActivityMainBinding implements ViewBinding {
 
       return new ActivityMainBinding((ConstraintLayout) rootView, buttonContainer,
           channelNameTextView, clinometerButton, compassButton, dataButton, headingTextView,
-          latTextView, lonTextView, pitchTextView, rollTextView, rulerSwitch, speedTextView,
-          trackSwitch);
+          latTextView, lonTextView, pitchTextView, rollTextView, rulerInfoTextView, rulerSwitch,
+          speedTextView, trackSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

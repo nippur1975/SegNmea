@@ -120,6 +120,20 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- Ruler Info -->
+    <TextView
+        android:id="@+id/rulerInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/buttonContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp" />
+
     <!-- Barra inferior -->
     <LinearLayout
         android:id="@+id/buttonContainer"

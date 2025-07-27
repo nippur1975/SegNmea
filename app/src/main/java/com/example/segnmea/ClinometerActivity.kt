@@ -30,15 +30,22 @@ class ClinometerActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.clinometer)
 
+        // Get the channel ID from the intent
+        channel = intent.getStringExtra("channel_id") ?: "3002133"
+
         // Set up the button click listeners
         binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
         binding.compassButton.setOnClickListener {
-            startActivity(Intent(this, CompassActivity::class.java))
+            val intent = Intent(this, CompassActivity::class.java)
+            intent.putExtra("channel_id", channel)
+            startActivity(intent)
         }
         binding.dataButton.setOnClickListener {
-            startActivity(Intent(this, DataActivity::class.java))
+            val intent = Intent(this, DataActivity::class.java)
+            intent.putExtra("channel_id", channel)
+            startActivity(intent)
         }
 
         // Fetch the initial data
@@ -50,7 +57,6 @@ class ClinometerActivity : AppCompatActivity() {
      */
     private fun fetchData() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
         rollAlarm = sharedPreferences.getInt("rollAlarm", 30).toFloat()
         val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
 

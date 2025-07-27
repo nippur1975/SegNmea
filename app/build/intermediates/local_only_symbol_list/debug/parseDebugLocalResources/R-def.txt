@@ -74,6 +74,7 @@ id rollImageView
 id rollSeekBar
 id rollTextView
 id rollValueTextView
+id rulerInfoTextView
 id rulerSwitch
 id saveButton
 id snippet
