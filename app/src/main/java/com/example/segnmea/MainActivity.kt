@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,10 +27,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import org.json.JSONObject
+import androidx.collection.LruCache
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMainBinding
+    private val bitmapCache = LruCache<String, Bitmap>(1024)
     private lateinit var map: GoogleMap
     private var boatMarker: Marker? = null
     private var historicalMarkers = mutableListOf<Marker>()
@@ -63,48 +66,43 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         currentChannel = sharedPreferences.getString("current_channel", "3002133") ?: "3002133"
         channelName = sharedPreferences.getString("current_channel_name", "Vessel") ?: "Vessel"
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        // IMPORTANT: Replace "YOUR_MAP_ID" with your actual Map ID
+        val mapOptions = GoogleMapOptions().mapId("YOUR_MAP_ID")
+        val mapFragment = SupportMapFragment.newInstance(mapOptions)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.map, mapFragment)
+            .commit()
         mapFragment.getMapAsync(this)
 
         // Botones de navegación (inferiores)
         binding.compassButton.setOnClickListener {
-            startActivity(Intent(this, CompassActivity::class.java))
+            val intent = Intent(this, CompassActivity::class.java)
+            intent.putExtra("channel_id", currentChannel)
+            startActivity(intent)
         }
         binding.clinometerButton.setOnClickListener {
-            startActivity(Intent(this, ClinometerActivity::class.java))
+            val intent = Intent(this, ClinometerActivity::class.java)
+            intent.putExtra("channel_id", currentChannel)
+            startActivity(intent)
         }
         binding.dataButton.setOnClickListener {
-            startActivity(Intent(this, DataActivity::class.java))
+            val intent = Intent(this, DataActivity::class.java)
+            intent.putExtra("channel_id", currentChannel)
+            startActivity(intent)
         }
 
-        binding.trackSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                historicalData.forEach { (channelId, trackPoints) ->
-                    trackPoints.forEach { trackPoint ->
-                        val historicalMarker = map.addMarker(
-                            MarkerOptions()
-                                .position(trackPoint.getPosition())
-                                .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_historical_marker, 0xFF0000FF.toInt())!!)) // Azul
-                                .anchor(0.5f, 0.5f)
-                        )
-                        if (historicalMarker != null) {
-                            markerToTrackPointMap[historicalMarker] = trackPoint
-                        }
-                    }
-                }
-            } else {
-                markerToTrackPointMap.keys.forEach { it.remove() }
-                markerToTrackPointMap.clear()
-            }
+        binding.trackSwitch.setOnCheckedChangeListener { _, _ ->
+            updateHistoricalMarkers()
         }
 
         binding.rulerSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                binding.rulerInfoTextView.visibility = View.VISIBLE
                 map.setOnMapClickListener { latLng ->
                     addRulerPoint(latLng)
                 }
             } else {
+                binding.rulerInfoTextView.visibility = View.GONE
                 map.setOnMapClickListener(null)
                 clearRuler()
             }
@@ -216,9 +214,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val feeds = jsonObject.getJSONArray("feeds")
 
             val points = mutableListOf<LatLng>()
-            val historicalDataForChannel = historicalData[channelId] ?: mutableListOf()
-            historicalDataForChannel.clear()
-            for (i in 0 until feeds.length()) {
+            val newHistoricalData = mutableListOf<TrackPoint>()
+            val startIndex = if (feeds.length() > 1000) feeds.length() - 1000 else 0
+            for (i in startIndex until feeds.length()) {
                 val feed = feeds.getJSONObject(i)
                 val lat = feed.optString("field3", "0")
                 val lon = feed.optString("field4", "0")
@@ -232,27 +230,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 if (latitude != 0.0 && longitude != 0.0) {
                     val trackPoint = TrackPoint(latitude, longitude, pitch, roll, speed, heading, createdAt)
-                    val position = trackPoint.getPosition()
-                    points.add(position)
-                    historicalDataForChannel.add(trackPoint)
-
-                    if (i < feeds.length() - 1) { // No agregar marcador para el último punto
-                        val historicalMarker = map.addMarker(
-                            MarkerOptions()
-                                .position(position)
-                                .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_historical_marker, 0xFF0000FF.toInt())!!)) // Azul
-                                .anchor(0.5f, 0.5f)
-                        )
-                        if (historicalMarker != null) {
-                            markerToTrackPointMap[historicalMarker] = trackPoint
-                            historicalMarker.isVisible = binding.trackSwitch.isChecked
-                        }
-                    }
+                    newHistoricalData.add(trackPoint)
+                    points.add(trackPoint.getPosition())
                 }
             }
 
+            // Remove old markers for this channel
+            val markersToRemove = mutableListOf<Marker>()
+            markerToTrackPointMap.forEach { (marker, trackPoint) ->
+                if (historicalData[channelId]?.contains(trackPoint) == true && !newHistoricalData.contains(trackPoint)) {
+                    markersToRemove.add(marker)
+                }
+            }
+            markersToRemove.forEach {
+                it.remove()
+                markerToTrackPointMap.remove(it)
+            }
+
+            // Add new markers
+            newHistoricalData.forEach { trackPoint ->
+                if (!markerToTrackPointMap.containsValue(trackPoint)) {
+                    val historicalMarker = map.addMarker(
+                        MarkerOptions()
+                            .position(trackPoint.getPosition())
+                            .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_historical_marker, 0xFF0000FF.toInt())!!))
+                            .anchor(0.5f, 0.5f)
+                            .visible(false) // Initially hidden
+                    )
+                    if (historicalMarker != null) {
+                        markerToTrackPointMap[historicalMarker] = trackPoint
+                    }
+                }
+            }
+            historicalData[channelId] = newHistoricalData
+            updateHistoricalMarkers()
+
             trackPolylines[channelId]?.points = points
-            historicalData[channelId] = historicalDataForChannel
 
             if (feeds.length() > 0) {
                 val lastFeed = feeds.getJSONObject(feeds.length() - 1)
@@ -365,14 +378,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getBitmap(resId: Int, color: Int): Bitmap? {
-        val drawable = ContextCompat.getDrawable(this, resId) ?: return null
-        val width = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth * 2 else 100
-        val height = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight * 2 else 100
-        drawable.setBounds(0, 0, width, height)
-        drawable.setTint(color)
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        drawable.draw(canvas)
+        val cacheKey = "$resId-$color"
+        var bitmap = bitmapCache.get(cacheKey)
+        if (bitmap == null) {
+            val drawable = ContextCompat.getDrawable(this, resId) ?: return null
+            val width = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth * 2 else 100
+            val height = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight * 2 else 100
+            drawable.setBounds(0, 0, width, height)
+            drawable.setTint(color)
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.draw(canvas)
+            bitmapCache.put(cacheKey, bitmap)
+        }
         return bitmap
     }
 
@@ -431,6 +449,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         builder.setTitle("Seleccionar Canal")
         val channelNames = channels.map { sharedPreferences.getString("channel_name_$it", "Canal ${channels.indexOf(it) + 1}") }
         builder.setSingleChoiceItems(channelNames.toTypedArray(), channels.indexOf(currentChannel)) { dialog, which ->
+            val oldChannel = currentChannel
             currentChannel = channels[which]
             channelName = channelNames[which] ?: "Canal ${which + 1}"
             val editor = sharedPreferences.edit()
@@ -438,6 +457,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             editor.putString("current_channel_name", channelName)
             editor.apply()
             dialog.dismiss()
+
+            updateHistoricalMarkers()
             fetchChannelData(currentChannel)
             val boatMarker = boatMarkers[currentChannel]
             if (boatMarker != null) {
@@ -467,7 +488,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             rulerPolyline?.points = rulerPoints
 
             val (distance, bearing) = calculateDistance(rulerPoints[rulerPoints.size - 2], rulerPoints.last())
-            Toast.makeText(this, "Distancia: %.2f mn, Rumbo: %.2f°".format(distance, bearing), Toast.LENGTH_SHORT).show()
+            binding.rulerInfoTextView.text = "Distancia: %.2f mn, Rumbo: %.2f°".format(distance, bearing)
         }
     }
 
@@ -477,6 +498,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         rulerMarkers.forEach { it.remove() }
         rulerMarkers.clear()
         rulerPoints.clear()
+        binding.rulerInfoTextView.text = ""
     }
 
     private fun calculateDistance(point1: LatLng, point2: LatLng): Pair<Double, Double> {
@@ -498,4 +520,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private val executor = java.util.concurrent.Executors.newSingleThreadExecutor()
+
+    private fun updateHistoricalMarkers() {
+        markerToTrackPointMap.forEach { (marker, trackPoint) ->
+            val belongingToCurrentChannel = historicalData[currentChannel]?.contains(trackPoint) == true
+            marker.isVisible = binding.trackSwitch.isChecked && belongingToCurrentChannel
+        }
+    }
 }

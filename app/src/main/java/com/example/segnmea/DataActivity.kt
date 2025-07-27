@@ -30,15 +30,22 @@ class DataActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.data)
 
+        // Get the channel ID from the intent
+        channel = intent.getStringExtra("channel_id") ?: "3002133"
+
         // Set up the button click listeners
         binding.mainButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
         binding.compassButton.setOnClickListener {
-            startActivity(Intent(this, CompassActivity::class.java))
+            val intent = Intent(this, CompassActivity::class.java)
+            intent.putExtra("channel_id", channel)
+            startActivity(intent)
         }
         binding.clinometerButton.setOnClickListener {
-            startActivity(Intent(this, ClinometerActivity::class.java))
+            val intent = Intent(this, ClinometerActivity::class.java)
+            intent.putExtra("channel_id", channel)
+            startActivity(intent)
         }
 
         // Fetch the initial data
@@ -49,8 +56,6 @@ class DataActivity : AppCompatActivity() {
      * Fetches the boat's data from the ThingSpeak API.
      */
     private fun fetchData() {
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        channel = sharedPreferences.getString("channel", "3002133") ?: "3002133"
         val url = "https://api.thingspeak.com/channels/$channel/feeds.json?results=1"
 
         val stringRequest = StringRequest(
