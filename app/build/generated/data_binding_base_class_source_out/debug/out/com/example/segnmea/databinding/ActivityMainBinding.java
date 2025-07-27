@@ -4,7 +4,6 @@ package com.example.segnmea.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -44,9 +43,6 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView latTextView;
 
   @NonNull
-  public final View ledView;
-
-  @NonNull
   public final TextView lonTextView;
 
   @NonNull
@@ -64,20 +60,13 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final Switch trackSwitch;
 
-  @NonNull
-  public final Button zoomInButton;
-
-  @NonNull
-  public final Button zoomOutButton;
-
   private ActivityMainBinding(@NonNull ConstraintLayout rootView,
       @NonNull LinearLayout buttonContainer, @NonNull TextView channelNameTextView,
       @NonNull LinearLayout clinometerButton, @NonNull LinearLayout compassButton,
       @NonNull LinearLayout dataButton, @NonNull TextView headingTextView,
-      @NonNull TextView latTextView, @NonNull View ledView, @NonNull TextView lonTextView,
-      @NonNull TextView pitchTextView, @NonNull TextView rollTextView, @NonNull Switch rulerSwitch,
-      @NonNull TextView speedTextView, @NonNull Switch trackSwitch, @NonNull Button zoomInButton,
-      @NonNull Button zoomOutButton) {
+      @NonNull TextView latTextView, @NonNull TextView lonTextView, @NonNull TextView pitchTextView,
+      @NonNull TextView rollTextView, @NonNull Switch rulerSwitch, @NonNull TextView speedTextView,
+      @NonNull Switch trackSwitch) {
     this.rootView = rootView;
     this.buttonContainer = buttonContainer;
     this.channelNameTextView = channelNameTextView;
@@ -86,15 +75,12 @@ public final class ActivityMainBinding implements ViewBinding {
     this.dataButton = dataButton;
     this.headingTextView = headingTextView;
     this.latTextView = latTextView;
-    this.ledView = ledView;
     this.lonTextView = lonTextView;
     this.pitchTextView = pitchTextView;
     this.rollTextView = rollTextView;
     this.rulerSwitch = rulerSwitch;
     this.speedTextView = speedTextView;
     this.trackSwitch = trackSwitch;
-    this.zoomInButton = zoomInButton;
-    this.zoomOutButton = zoomOutButton;
   }
 
   @Override
@@ -166,12 +152,6 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.ledView;
-      View ledView = ViewBindings.findChildViewById(rootView, id);
-      if (ledView == null) {
-        break missingId;
-      }
-
       id = R.id.lonTextView;
       TextView lonTextView = ViewBindings.findChildViewById(rootView, id);
       if (lonTextView == null) {
@@ -208,22 +188,10 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.zoomInButton;
-      Button zoomInButton = ViewBindings.findChildViewById(rootView, id);
-      if (zoomInButton == null) {
-        break missingId;
-      }
-
-      id = R.id.zoomOutButton;
-      Button zoomOutButton = ViewBindings.findChildViewById(rootView, id);
-      if (zoomOutButton == null) {
-        break missingId;
-      }
-
       return new ActivityMainBinding((ConstraintLayout) rootView, buttonContainer,
           channelNameTextView, clinometerButton, compassButton, dataButton, headingTextView,
-          latTextView, ledView, lonTextView, pitchTextView, rollTextView, rulerSwitch,
-          speedTextView, trackSwitch, zoomInButton, zoomOutButton);
+          latTextView, lonTextView, pitchTextView, rollTextView, rulerSwitch, speedTextView,
+          trackSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

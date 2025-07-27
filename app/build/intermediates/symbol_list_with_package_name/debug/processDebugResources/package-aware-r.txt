@@ -3071,6 +3071,7 @@ drawable compas2
 drawable compas3
 drawable compass_rose
 drawable compass_rose1
+drawable compass_rosebb
 drawable compass_rosexx
 drawable compass_roseyy
 drawable design_fab_background
@@ -3094,6 +3095,7 @@ drawable ic_channel
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_compass
+drawable ic_historical_marker
 drawable ic_home
 drawable ic_keyboard_black_24dp
 drawable ic_list
@@ -3104,8 +3106,11 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_navigation
 drawable ic_ruler
 drawable ic_search_black_24
+drawable ic_square
+drawable ic_square_rotated
 drawable indeterminate_static
 drawable m3_avd_hide_password
 drawable m3_avd_show_password
@@ -3263,7 +3268,6 @@ id action_mode_bar
 id action_mode_bar_stub
 id action_mode_close_button
 id action_select_channel
-id action_service
 id action_text
 id actions
 id activity_chooser_view_content
@@ -3454,7 +3458,6 @@ id languageButton
 id languageSpinner
 id latTextView
 id layout
-id ledView
 id left
 id leftToRight
 id legacy
@@ -3746,8 +3749,6 @@ id wrap_content
 id wrap_content_constrained
 id x_left
 id x_right
-id zoomInButton
-id zoomOutButton
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer app_bar_elevation_anim_duration
@@ -3956,6 +3957,7 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
+menu activity_main
 menu menu_main
 plurals mtrl_badge_content_description
 raw alarma_babor
@@ -3994,6 +3996,8 @@ string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string about
+string about_message
+string about_title
 string androidx_startup
 string app_name
 string appbar_scrolling_view_behavior
@@ -4011,6 +4015,8 @@ string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
 string channel
+string channel_select
+string channel_setting
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
@@ -4042,12 +4048,16 @@ string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
 string heading
+string heading_es
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description
 string language
+string language_select
 string lat
+string lat_es
 string lon
+string lon_es
 string m3_exceed_max_badge_text_suffix
 string m3_ref_typeface_brand_medium
 string m3_ref_typeface_brand_regular
@@ -4155,9 +4165,11 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string pitch
 string pitch_alarm_threshold
+string pitch_es
 string principal
 string roll
 string roll_alarm_threshold
+string roll_es
 string ruler
 string save
 string search_menu_title
@@ -4169,7 +4181,9 @@ string settings_alarms
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string speed
+string speed_es
 string status_bar_notification_info_overflow
+string track
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog

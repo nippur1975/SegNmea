@@ -12,18 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Nombre del canal -->
-    <TextView
-        android:id="@+id/channelNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Track y Ruler -->
     <LinearLayout
@@ -47,27 +35,29 @@
             android:id="@+id/rulerSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ruler"
+            android:text="@string/ruler"
             android:textSize="20sp"
             android:layout_marginStart="10dp"/>
-
-        <View
-            android:id="@+id/ledView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/red_dot"/>
     </LinearLayout>
+
 
     <!-- Datos NMEA -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/channelNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/channelNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/latTextView"
@@ -127,13 +117,13 @@
     <!-- Barra inferior (sin canal) -->
     <LinearLayout
         android:id="@+id/buttonContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="20dp">
+        android:layout_gravity="bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -157,12 +147,12 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_compass"
-                    app:tint="#a5b6a0" />
+                    app:tint="@android:color/white" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/compass"
-                    android:textColor="#a5b6a0"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -177,12 +167,12 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_ruler"
-                    app:tint="#a5b6a0" />
+                    app:tint="@android:color/white" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/clinometer"
-                    android:textColor="#a5b6a0"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -197,37 +187,15 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_list"
-                    app:tint="#a5b6a0" />
+                    app:tint="@android:color/white" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/data"
-                    android:textColor="#a5b6a0"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <!-- Botones de zoom -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/buttonContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp">
-
-        <Button
-            android:id="@+id/zoomInButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"/>
-
-        <Button
-            android:id="@+id/zoomOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

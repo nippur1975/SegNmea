@@ -66,163 +66,162 @@
 41-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:13:9-44
 42        android:supportsRtl="true"
 42-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:14:9-35
-43        android:testOnly="true"
-44        android:theme="@style/AppTheme" >
-44-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:15:9-40
-45        <meta-data
-45-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:17:9-19:71
-46            android:name="com.google.android.geo.API_KEY"
-46-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:18:13-58
-47            android:value="AIzaSyCCsWLI_oB-Sq6YGeCD9lEerfNNVgkkjjU" />
-47-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:19:13-68
-48
-49        <activity
-49-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:9-26:20
-50            android:name="com.example.segnmea.MainActivity"
-50-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:19-47
-51            android:exported="true" >
-51-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:48-71
-52            <intent-filter>
-52-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:22:13-25:29
-53                <action android:name="android.intent.action.MAIN" />
-53-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:17-69
-53-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:25-66
-54
-55                <category android:name="android.intent.category.LAUNCHER" />
-55-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:17-77
-55-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:27-74
-56            </intent-filter>
-57        </activity>
-58        <activity
-58-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:9-77
-59            android:name="com.example.segnmea.CompassActivity"
-59-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:19-50
-60            android:exported="false" />
-60-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:51-75
-61        <activity
-61-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:9-80
-62            android:name="com.example.segnmea.ClinometerActivity"
-62-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:19-53
-63            android:exported="false" />
-63-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:54-78
-64        <activity
-64-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:9-74
-65            android:name="com.example.segnmea.DataActivity"
-65-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:19-47
-66            android:exported="false" />
-66-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:48-72
-67        <activity
-67-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:9-78
-68            android:name="com.example.segnmea.LanguageActivity"
-68-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:19-51
-69            android:exported="false" />
-69-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:52-76
-70        <activity
-70-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:9-77
-71            android:name="com.example.segnmea.ChannelActivity"
-71-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:19-50
-72            android:exported="false" />
-72-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:51-75
-73        <activity
-73-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:9-75
-74            android:name="com.example.segnmea.AlarmActivity"
-74-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:19-48
-75            android:exported="false" />
-75-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:49-73
-76        <activity
-76-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:9-78
-77            android:name="com.example.segnmea.SettingsActivity"
-77-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:19-51
-78            android:exported="false" />
-78-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:52-76
-79
-80        <provider
-80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-81            android:name="androidx.startup.InitializationProvider"
-81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-82            android:authorities="com.example.segnmea.androidx-startup"
-82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
-83            android:exported="false" >
-83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
-84            <meta-data
-84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-85                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-85-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-86                android:value="androidx.startup" />
-86-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-87            <meta-data
-87-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
-88                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-88-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
-89                android:value="androidx.startup" />
-89-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
-90            <meta-data
-90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-91                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-91-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-92                android:value="androidx.startup" />
-92-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-93        </provider>
-94
-95        <meta-data
-95-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:8:9-10:69
-96            android:name="com.google.android.gms.version"
-96-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:9:13-58
-97            android:value="@integer/google_play_services_version" /> <!-- Needs to be explicitly declared on P+ -->
-97-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:10:13-66
-98        <uses-library
-98-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
-99            android:name="org.apache.http.legacy"
-99-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
-100            android:required="false" />
-100-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
-101
-102        <activity
-102-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
-103            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-103-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
-104            android:exported="false"
-104-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
-105            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-105-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
-106
-107        <receiver
-107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-108            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-109            android:directBootAware="false"
-109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-110            android:enabled="true"
-110-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-111            android:exported="true"
-111-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-112            android:permission="android.permission.DUMP" >
-112-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-113            <intent-filter>
-113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-114                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-114-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-114-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-115            </intent-filter>
-116            <intent-filter>
-116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-117                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-117-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-117-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-118            </intent-filter>
-119            <intent-filter>
-119-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-120                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-120-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-120-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-121            </intent-filter>
-122            <intent-filter>
-122-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-123                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-123-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-123-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-124            </intent-filter>
-125        </receiver>
-126    </application>
-127
-128</manifest>
+43        android:theme="@style/AppTheme" >
+43-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:15:9-40
+44        <meta-data
+44-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:17:9-19:71
+45            android:name="com.google.android.geo.API_KEY"
+45-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:18:13-58
+46            android:value="AIzaSyCCsWLI_oB-Sq6YGeCD9lEerfNNVgkkjjU" />
+46-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:19:13-68
+47
+48        <activity
+48-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:9-26:20
+49            android:name="com.example.segnmea.MainActivity"
+49-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:19-47
+50            android:exported="true" >
+50-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:21:48-71
+51            <intent-filter>
+51-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:22:13-25:29
+52                <action android:name="android.intent.action.MAIN" />
+52-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:17-69
+52-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:23:25-66
+53
+54                <category android:name="android.intent.category.LAUNCHER" />
+54-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:17-77
+54-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:24:27-74
+55            </intent-filter>
+56        </activity>
+57        <activity
+57-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:9-77
+58            android:name="com.example.segnmea.CompassActivity"
+58-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:19-50
+59            android:exported="false" />
+59-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:27:51-75
+60        <activity
+60-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:9-80
+61            android:name="com.example.segnmea.ClinometerActivity"
+61-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:19-53
+62            android:exported="false" />
+62-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:28:54-78
+63        <activity
+63-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:9-74
+64            android:name="com.example.segnmea.DataActivity"
+64-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:19-47
+65            android:exported="false" />
+65-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:29:48-72
+66        <activity
+66-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:9-78
+67            android:name="com.example.segnmea.LanguageActivity"
+67-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:19-51
+68            android:exported="false" />
+68-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:30:52-76
+69        <activity
+69-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:9-77
+70            android:name="com.example.segnmea.ChannelActivity"
+70-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:19-50
+71            android:exported="false" />
+71-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:31:51-75
+72        <activity
+72-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:9-75
+73            android:name="com.example.segnmea.AlarmActivity"
+73-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:19-48
+74            android:exported="false" />
+74-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:32:49-73
+75        <activity
+75-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:9-78
+76            android:name="com.example.segnmea.SettingsActivity"
+76-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:19-51
+77            android:exported="false" />
+77-->C:\Users\hdelacruz\Desktop\seguimiento\app\src\main\AndroidManifest.xml:33:52-76
+78
+79        <provider
+79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+80            android:name="androidx.startup.InitializationProvider"
+80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+81            android:authorities="com.example.segnmea.androidx-startup"
+81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+82            android:exported="false" >
+82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+83            <meta-data
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+84                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+85                android:value="androidx.startup" />
+85-->[androidx.emoji2:emoji2:1.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\e40d5c7c88554e1aceeeae00c8c1da9e\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+86            <meta-data
+86-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+87                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+87-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+88                android:value="androidx.startup" />
+88-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85afbaf5f43cef883fa5d913c3224624\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+89            <meta-data
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+90                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+91                android:value="androidx.startup" />
+91-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+92        </provider>
+93
+94        <meta-data
+94-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:8:9-10:69
+95            android:name="com.google.android.gms.version"
+95-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:9:13-58
+96            android:value="@integer/google_play_services_version" /> <!-- Needs to be explicitly declared on P+ -->
+96-->[com.google.maps.android:android-maps-utils:3.8.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\432da4ec89deb4cc10ef0f6b6cae061b\transformed\jetified-android-maps-utils-3.8.0\AndroidManifest.xml:10:13-66
+97        <uses-library
+97-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
+98            android:name="org.apache.http.legacy"
+98-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
+99            android:required="false" />
+99-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\85993168e4a128fde3990b9844934312\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
+100
+101        <activity
+101-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+102            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+102-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+103            android:exported="false"
+103-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+104            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+104-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\45128f3f9ce3467283be41ecc55396dc\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+105
+106        <receiver
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+107            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+108            android:directBootAware="false"
+108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+109            android:enabled="true"
+109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+110            android:exported="true"
+110-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+111            android:permission="android.permission.DUMP" >
+111-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+112            <intent-filter>
+112-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+113                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+114            </intent-filter>
+115            <intent-filter>
+115-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+116                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+117            </intent-filter>
+118            <intent-filter>
+118-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+119                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+119-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+119-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+120            </intent-filter>
+121            <intent-filter>
+121-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+122                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+122-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+122-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\hdelacruz\.gradle\caches\8.13\transforms\008fcf62c8daf56ecff704500c6bafd1\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+123            </intent-filter>
+124        </receiver>
+125    </application>
+126
+127</manifest>
