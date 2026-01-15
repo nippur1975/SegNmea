@@ -28,14 +28,17 @@ class NmeaParser {
             when (parts[0]) {
                 "\$GPRMC", "\$GNRMC" -> parseRMC(parts, data)
                 "\$GPGGA", "\$GNGGA" -> parseGGA(parts, data)
-                "\$HCHDG", "\$HCHDT" -> parseHeading(parts, data)
+                "\$GPGLL", "\$GNGLL" -> parseGLL(parts, data)
+                "\$GPZDA", "\$GNZDA" -> parseZDA(parts, data)
+                "\$GPVTG", "\$GNVTG" -> parseVTG(parts, data)
+                "\$HCHDG", "\$HCHDT", "\$GPHDT" -> parseHeading(parts, data)
                 "\$IIXDR" -> parseXDR(parts, data)
+                "\$PFEC" -> if (parts.size > 1 && parts[1] == "GPatt") parseGPatt(parts, data)
                 // Custom formats or others can be added here
             }
 
             // Fallback/Custom parsing for Pitch/Roll if not standard
-            // Expecting something like "$...PITCH,10.5,ROLL,-2.3..." if not XDR
-            if (data.pitch == null || data.roll == null) {
+            if ((data.pitch == null || data.roll == null) && parts[0] != "\$PFEC") {
                  parseCustomPitchRoll(cleanSentence, data)
             }
 
@@ -54,15 +57,9 @@ class NmeaParser {
             data.speed = parts[7].toDoubleOrNull()
             data.heading = parts[8].toDoubleOrNull()
 
-            // Construct Timestamp
             val time = parts[1]
             val date = parts[9]
             if (time.length >= 6 && date.length == 6) {
-                // simple construction, ignoring ms
-                // Date: DDMMYY, Time: HHMMSS
-                // Output format expected by App: YYYY-MM-DD HH:MM:SS (ThingSpeak format usually)
-                // But TrackPoint seems to just hold a string.
-                // ThingSpeak format: 2023-10-27T10:00:00Z
                 try {
                      val day = date.substring(0, 2)
                      val month = date.substring(2, 4)
@@ -77,8 +74,8 @@ class NmeaParser {
     }
 
     private fun parseGGA(parts: List<String>, data: NmeaData) {
-        // $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
-        // 2: Lat, 3: N/S, 4: Lon, 5: E/W
+        // $GPGGA,232310,3544.0987,N,13521.4056,E,8,10,1.6,44,M,,M,,*7F
+        // 1: Time, 2: Lat, 3: N/S, 4: Lon, 5: E/W
         if (parts.size > 5) {
              val lat = convertToDecimal(parts[2], parts[3])
              val lon = convertToDecimal(parts[4], parts[5])
@@ -89,17 +86,74 @@ class NmeaParser {
         }
     }
 
+    private fun parseGLL(parts: List<String>, data: NmeaData) {
+        // $GPGLL,3544.1019,N,13521.4064,E,232309,A,S*51
+        // 1: Lat, 2: N/S, 3: Lon, 4: E/W, 5: Time, 6: Status
+        if (parts.size > 6 && (parts[6] == "A" || parts[6] == "V")) { // Some GLL might use A for Valid
+             val lat = convertToDecimal(parts[1], parts[2])
+             val lon = convertToDecimal(parts[3], parts[4])
+             if (lat != 0.0 || lon != 0.0) {
+                 data.latitude = lat
+                 data.longitude = lon
+             }
+        }
+    }
+
+    private fun parseZDA(parts: List<String>, data: NmeaData) {
+        // $GPZDA,232310,11,01,2006,00,00*4C
+        // 1: Time (HHMMSS.ss), 2: Day, 3: Month, 4: Year, 5: Local zone hour, 6: Local zone min
+        if (parts.size > 4) {
+            val time = parts[1]
+            val day = parts[2]
+            val month = parts[3]
+            val year = parts[4]
+
+            if (time.length >= 6) {
+                try {
+                     val hour = time.substring(0, 2)
+                     val min = time.substring(2, 4)
+                     val sec = time.substring(4, 6)
+                     data.timestamp = "$year-$month-${day}T$hour:$min:${sec}Z"
+                } catch (e: Exception) {}
+            }
+        }
+    }
+
+    private fun parseVTG(parts: List<String>, data: NmeaData) {
+        // $GPVTG,120.8,T,120.9,M,0.0,N,0.0,K,D*27
+        // Track True: 1, T
+        // Track Mag: 3, M
+        // Speed Knots: 5, N
+        // Speed KPH: 7, K
+        // Look for 'N' to find Knots value before it
+        for (i in 1 until parts.size step 2) {
+            if (i + 1 < parts.size) {
+                if (parts[i+1] == "N") {
+                     data.speed = parts[i].toDoubleOrNull()
+                }
+            }
+        }
+    }
+
     private fun parseHeading(parts: List<String>, data: NmeaData) {
-         // $HCHDT,123.4,T
+         // $GPHDT,186.8,T*32
          if (parts.size > 1) {
              data.heading = parts[1].toDoubleOrNull()
          }
     }
 
+    private fun parseGPatt(parts: List<String>, data: NmeaData) {
+        // $PFEC,GPatt,187.1,+12.0,-25.0*45
+        // 2: Heading, 3: Pitch, 4: Roll
+        if (parts.size > 4) {
+            data.heading = parts[2].toDoubleOrNull()
+            data.pitch = parts[3].toDoubleOrNull()
+            data.roll = parts[4].toDoubleOrNull()
+        }
+    }
+
     private fun parseXDR(parts: List<String>, data: NmeaData) {
         // $IIXDR,A,10.5,D,PITCH,A,-2.3,D,ROLL
-        // Look for "PITCH" and "ROLL" in the parts and take the value before it (or associated with it)
-        // Standard XDR: Type, Data, Units, Name
         for (i in 0 until parts.size - 3 step 4) {
              if (i + 4 < parts.size) {
                  val name = parts[i + 4]
@@ -114,8 +168,6 @@ class NmeaParser {
     }
 
     private fun parseCustomPitchRoll(sentence: String, data: NmeaData) {
-        // Naive parsing for "PITCH:x.x" or "ROLL:y.y"
-        // Regex might be cleaner
         val pitchRegex = Regex("PITCH[:= ]?([0-9.-]+)", RegexOption.IGNORE_CASE)
         val rollRegex = Regex("ROLL[:= ]?([0-9.-]+)", RegexOption.IGNORE_CASE)
 
