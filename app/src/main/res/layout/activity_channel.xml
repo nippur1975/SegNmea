@@ -33,6 +33,28 @@
         android:hint="Channel 4"
         android:inputType="number" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="My Boat Settings (ThingSpeak)"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/myChannelIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="My Channel ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/writeApiKeyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Write API Key"
+        android:inputType="text" />
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
