@@ -1,10 +1,13 @@
 package com.example.segnmea
 
 import android.bluetooth.BluetoothDevice
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.LruCache
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -138,7 +142,31 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        checkPermissions()
         startRepeatingTask()
+    }
+
+    private fun checkPermissions() {
+        val permissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH)
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN)
+        }
+
+        val permissionsToRequest = permissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 1001)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
