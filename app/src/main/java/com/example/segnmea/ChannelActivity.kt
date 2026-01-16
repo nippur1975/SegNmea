@@ -24,6 +24,7 @@ class ChannelActivity : AppCompatActivity() {
         binding.channel2EditText.setText(sharedPreferences.getString("channel2", "3007462"))
         binding.channel3EditText.setText(sharedPreferences.getString("channel3", "3017966"))
         binding.channel4EditText.setText(sharedPreferences.getString("channel4", "3017982"))
+        binding.writeApiKeyEditText.setText(sharedPreferences.getString("write_api_key", ""))
 
         // Guardar cambios al presionar "Guardar"
         binding.saveButton.setOnClickListener {
@@ -32,6 +33,7 @@ class ChannelActivity : AppCompatActivity() {
             editor.putString("channel2", binding.channel2EditText.text.toString().trim())
             editor.putString("channel3", binding.channel3EditText.text.toString().trim())
             editor.putString("channel4", binding.channel4EditText.text.toString().trim())
+            editor.putString("write_api_key", binding.writeApiKeyEditText.text.toString().trim())
             editor.apply()
 
             // Volver a MainActivity y refrescar los datos

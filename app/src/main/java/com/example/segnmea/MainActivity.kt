@@ -29,10 +29,23 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import org.json.JSONObject
 import androidx.collection.LruCache
+import android.bluetooth.BluetoothDevice
+import android.widget.ArrayAdapter
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, BluetoothService.BluetoothListener {
+
+    companion object {
+        private const val REQUEST_PERMISSIONS = 2
+    }
 
     private lateinit var binding: ActivityMainBinding
+    private val bluetoothService = BluetoothService(this)
+    private val nmeaParser = NmeaParser()
+    private val thingSpeakService = ThingSpeakService()
+    private var writeApiKey = ""
+    private var lastUploadTime = 0L
+    private val UPLOAD_INTERVAL = 15000L // 15 seconds
+
     private val bitmapCache = LruCache<String, Bitmap>(1024)
     private lateinit var map: GoogleMap
     private var boatMarker: Marker? = null
@@ -66,6 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         currentChannel = sharedPreferences.getString("current_channel", "3002133") ?: "3002133"
         channelName = sharedPreferences.getString("current_channel_name", "Vessel") ?: "Vessel"
+        writeApiKey = sharedPreferences.getString("write_api_key", "") ?: ""
 
         // IMPORTANT: Replace "YOUR_MAP_ID" with your actual Map ID
         val mapOptions = GoogleMapOptions().mapId("YOUR_MAP_ID")
@@ -402,6 +416,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_connect_bluetooth -> {
+                if (checkPermissions()) {
+                    showDeviceListDialog()
+                }
+                true
+            }
             R.id.action_alarm_settings -> {
                 startActivity(Intent(this, AlarmActivity::class.java))
                 true
@@ -434,6 +454,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         stopRepeatingTask()
+        bluetoothService.stop()
     }
 
     private fun showChannelSelectionDialog() {
@@ -526,6 +547,142 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         markerToTrackPointMap.forEach { (marker, trackPoint) ->
             val belongingToCurrentChannel = historicalData[currentChannel]?.contains(trackPoint) == true
             marker.isVisible = binding.trackSwitch.isChecked && belongingToCurrentChannel
+        }
+    }
+
+    private fun checkPermissions(): Boolean {
+        val permissions = mutableListOf<String>()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_SCAN) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                permissions.add(android.Manifest.permission.BLUETOOTH_SCAN)
+            }
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                permissions.add(android.Manifest.permission.BLUETOOTH_CONNECT)
+            }
+        } else {
+             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+
+        if (permissions.isNotEmpty()) {
+            androidx.core.app.ActivityCompat.requestPermissions(this, permissions.toTypedArray(), REQUEST_PERMISSIONS)
+            return false
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }) {
+                showDeviceListDialog()
+            } else {
+                Toast.makeText(this, "Permissions required for Bluetooth", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun showDeviceListDialog() {
+        val pairedDevices = bluetoothService.getPairedDevices()
+        if (pairedDevices.isNullOrEmpty()) {
+            Toast.makeText(this, "No devices found", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val deviceList = pairedDevices.toList()
+        val deviceNames = deviceList.map { "${it.name}\n${it.address}" }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.select_device))
+            .setItems(deviceNames) { _, which ->
+                bluetoothService.connect(deviceList[which])
+            }
+            .show()
+    }
+
+    override fun onMessageReceived(message: String) {
+        val data = nmeaParser.parse(message) ?: return
+
+        runOnUiThread {
+            val speed = data.speed?.toString() ?: ""
+            val heading = data.heading?.toString() ?: ""
+            val pitch = data.pitch?.toString() ?: ""
+            val roll = data.roll?.toString() ?: ""
+            val lat = data.lat?.toString() ?: ""
+            val lon = data.lon?.toString() ?: ""
+
+            if (data.lat != null && data.lon != null) {
+                updateUI(lat, lon, speed, heading, pitch, roll)
+
+                val position = LatLng(data.lat, data.lon)
+                val trackPoint = TrackPoint(data.lat, data.lon, pitch, roll, speed, heading, java.util.Date().toString())
+
+                val list = historicalData.getOrPut(currentChannel) { mutableListOf() }
+                if (!list.contains(trackPoint)) {
+                     list.add(trackPoint)
+                     var polyline = trackPolylines[currentChannel]
+                     if (polyline == null) {
+                         // Initialize if missing
+                         polyline = map.addPolyline(PolylineOptions().width(5f).color(0xFF0000FF.toInt()))
+                         trackPolylines[currentChannel] = polyline
+                     }
+                     polyline.points = list.map { it.getPosition() }
+                }
+
+                var boatMarker = boatMarkers[currentChannel]
+                if (boatMarker == null) {
+                      val bitmap = getBitmap(R.drawable.ic_navigation, 0xFF0000FF.toInt())
+                      if (bitmap != null) {
+                          boatMarker = map.addMarker(
+                                MarkerOptions()
+                                    .position(position)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                    .anchor(0.5f, 0.5f)
+                          )
+                          boatMarkers[currentChannel] = boatMarker!!
+                          boatMarker.tag = bitmap
+                      }
+                } else {
+                     boatMarker.position = position
+                     boatMarker.rotation = data.heading ?: boatMarker.rotation
+                }
+                map.moveCamera(CameraUpdateFactory.newLatLng(position))
+            } else if (data.pitch != null || data.roll != null) {
+                 updateUI(lat, lon, speed, heading, pitch, roll)
+            }
+
+            val now = System.currentTimeMillis()
+            if (now - lastUploadTime > UPLOAD_INTERVAL && writeApiKey.isNotEmpty()) {
+                thingSpeakService.updateChannel(
+                    writeApiKey,
+                    data.lat,
+                    data.lon,
+                    data.speed,
+                    data.heading,
+                    data.pitch,
+                    data.roll
+                )
+                lastUploadTime = now
+            }
+        }
+    }
+
+    override fun onStatusChange(status: String) {
+        runOnUiThread {
+            Toast.makeText(this, status, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onConnected(deviceName: String) {
+        runOnUiThread {
+            Toast.makeText(this, "Connected to $deviceName", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onConnectionFailed() {
+         runOnUiThread {
+            Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show()
         }
     }
 }
