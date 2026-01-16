@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter

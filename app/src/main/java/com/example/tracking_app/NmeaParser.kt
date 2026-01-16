@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import java.text.SimpleDateFormat
 import java.util.Locale

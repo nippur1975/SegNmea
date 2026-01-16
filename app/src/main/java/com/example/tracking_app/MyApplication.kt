@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.app.Application
 import android.content.Context

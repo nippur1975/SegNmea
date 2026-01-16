@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import org.junit.Test
 import org.junit.Assert.*

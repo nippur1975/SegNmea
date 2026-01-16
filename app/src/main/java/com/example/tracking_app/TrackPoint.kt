@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import com.google.android.gms.maps.model.LatLng
 

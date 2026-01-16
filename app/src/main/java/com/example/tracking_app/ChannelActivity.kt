@@ -1,10 +1,10 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.segnmea.databinding.ActivityChannelBinding
+import com.example.tracking_app.databinding.ActivityChannelBinding
 
 class ChannelActivity : AppCompatActivity() {
 

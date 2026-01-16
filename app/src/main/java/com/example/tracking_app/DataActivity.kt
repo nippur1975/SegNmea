@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,7 @@ import java.util.TimeZone
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.segnmea.databinding.ActivityDataBinding
+import com.example.tracking_app.databinding.ActivityDataBinding
 import org.json.JSONObject
 
 /**

@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.bluetooth.BluetoothDevice
 import android.Manifest
@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.segnmea.databinding.ActivityMainBinding
+import com.example.tracking_app.databinding.ActivityMainBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions

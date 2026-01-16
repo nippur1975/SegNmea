@@ -1,4 +1,4 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import android.os.Looper
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.segnmea.databinding.ActivityClinometerBinding
+import com.example.tracking_app.databinding.ActivityClinometerBinding
 import org.json.JSONObject
 import java.util.*
 

@@ -39,7 +39,7 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <com.example.segnmea.PitchView
+            <com.example.tracking_app.PitchView
                 android:id="@+id/pitchImageView"
                 android:layout_width="250dp"
                 android:layout_height="250dp" />
@@ -54,7 +54,7 @@
             android:gravity="center"
             android:layout_marginTop="20dp">
 
-            <com.example.segnmea.RollView
+            <com.example.tracking_app.RollView
                 android:id="@+id/rollImageView"
                 android:layout_width="250dp"
                 android:layout_height="250dp" />
