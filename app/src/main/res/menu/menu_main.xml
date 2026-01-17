@@ -22,4 +22,8 @@
         android:id="@+id/action_about"
         android:title="@string/about_title"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_ts_key"
+        android:title="ThingSpeak API Key"
+        app:showAsAction="never" />
 </menu>
