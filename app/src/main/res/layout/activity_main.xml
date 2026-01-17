@@ -43,6 +43,17 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp" />
 
+    <Button
+        android:id="@+id/connectBluetoothButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BT Connect"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/rulerSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
