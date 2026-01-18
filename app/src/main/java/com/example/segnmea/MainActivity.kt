@@ -57,6 +57,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var channelName = "Vessel"
     private val refreshInterval = 15000L // 15 segundos
 
+    // Bluetooth
+    private var bluetoothService: BluetoothService? = null
+    private var isBluetoothConnected = false
+    private var currentDay: String = ""
+    private var bluetoothTrackPoints = mutableListOf<TrackPoint>()
+    private var lastUploadTime = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -106,6 +113,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 binding.rulerInfoTextView.visibility = View.GONE
                 map.setOnMapClickListener(null)
                 clearRuler()
+            }
+        }
+
+        bluetoothService = BluetoothService(this) { nmeaData ->
+            runOnUiThread {
+                processNmeaData(nmeaData)
             }
         }
 
@@ -171,8 +184,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val updateTask = object : Runnable {
         override fun run() {
-            channels.forEach { channel ->
-                fetchChannelData(channel)
+            if (!isBluetoothConnected) {
+                channels.forEach { channel ->
+                    fetchChannelData(channel)
+                }
             }
             handler.postDelayed(this, refreshInterval)
         }
@@ -414,6 +429,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 showChannelSelectionDialog()
                 true
             }
+            R.id.action_connect_bluetooth -> {
+                showBluetoothDeviceSelectionDialog()
+                true
+            }
             R.id.action_language_settings -> {
                 startActivity(Intent(this, LanguageActivity::class.java))
                 true
@@ -434,6 +453,143 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         stopRepeatingTask()
+        bluetoothService?.disconnect()
+    }
+
+    private fun showBluetoothDeviceSelectionDialog() {
+        if (androidx.core.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                requestPermissions(arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT, android.Manifest.permission.BLUETOOTH_SCAN), 1001)
+                return
+            }
+        }
+
+        val pairedDevices = bluetoothService?.getPairedDevices()
+        val deviceList = pairedDevices?.toList() ?: emptyList()
+        val deviceNames = deviceList.map { "${it.name} (${it.address})" }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("Select Bluetooth Device")
+            .setItems(deviceNames) { _, which ->
+                val device = deviceList[which]
+                bluetoothService?.connect(device)
+                isBluetoothConnected = true
+                Toast.makeText(this, "Connecting to ${device.name}...", Toast.LENGTH_SHORT).show()
+                binding.channelNameTextView.text = "Bluetooth: ${device.name}"
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun processNmeaData(data: NmeaData) {
+        if (!data.isValid) return
+
+        // Update UI
+        updateUI(
+            data.latitude.toString(),
+            data.longitude.toString(),
+            data.speed.toString(),
+            data.heading.toString(),
+            data.pitch.toString(),
+            data.roll.toString()
+        )
+
+        // Map updates
+        val position = LatLng(data.latitude, data.longitude)
+        if (isBluetoothConnected) {
+             map.moveCamera(CameraUpdateFactory.newLatLng(position)) // Don't zoom every time, just pan
+        }
+
+        val iconResId = R.drawable.ic_navigation
+        val iconColor = 0xFF00FF00.toInt() // Green for live
+        val bitmap = getBitmap(iconResId, iconColor)
+        val rotation = data.heading.toFloat()
+
+        var boatMarker = boatMarkers["BLUETOOTH"]
+        if (boatMarker == null) {
+            boatMarker = map.addMarker(
+                MarkerOptions()
+                    .position(position)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+                    .rotation(rotation)
+                    .anchor(0.5f, 0.5f)
+            )
+            if (boatMarker != null) {
+                boatMarker.tag = bitmap
+                boatMarkers["BLUETOOTH"] = boatMarker
+            }
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15f))
+        } else {
+            boatMarker.position = position
+            boatMarker.rotation = rotation
+            boatMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+        }
+
+        // Daily Track Logic
+        // "track of all day (resets every day)"
+        // Check date
+        // data.date is "DDMMYY"
+        if (currentDay != data.date) {
+            currentDay = data.date
+            bluetoothTrackPoints.clear()
+            // Clear map track for bluetooth
+            trackPolylines["BLUETOOTH"]?.remove()
+            trackPolylines.remove("BLUETOOTH")
+        }
+
+        val trackPoint = TrackPoint(
+            data.latitude,
+            data.longitude,
+            data.pitch.toString(),
+            data.roll.toString(),
+            data.speed.toString(),
+            data.heading.toString(),
+            "${data.time} ${data.date}"
+        )
+        bluetoothTrackPoints.add(trackPoint)
+
+        // Update Polyline
+        val points = bluetoothTrackPoints.map { it.getPosition() }
+        var polyline = trackPolylines["BLUETOOTH"]
+        if (polyline == null) {
+            polyline = map.addPolyline(
+                 PolylineOptions()
+                    .width(5f)
+                    .color(0xFF00FF00.toInt()) // Green
+            )
+            trackPolylines["BLUETOOTH"] = polyline
+        }
+        polyline.points = points
+
+        // Upload to ThingSpeak
+        val now = System.currentTimeMillis()
+        if (now - lastUploadTime > 15000) { // Every 15 seconds
+            uploadToThingSpeak(data)
+            lastUploadTime = now
+        }
+    }
+
+    private fun uploadToThingSpeak(data: NmeaData) {
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val writeApiKey = sharedPreferences.getString("write_api_key", "")
+        if (writeApiKey.isNullOrEmpty()) return
+
+        val url = "https://api.thingspeak.com/update?api_key=$writeApiKey" +
+                "&field1=${data.pitch}" +
+                "&field2=${data.roll}" +
+                "&field3=${data.latitude}" +
+                "&field4=${data.longitude}" +
+                "&field5=${data.speed}" +
+                "&field6=${data.heading}"
+
+        executor.execute {
+            try {
+                java.net.URL(url).readText()
+                Log.d("ThingSpeak", "Uploaded successfully")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun showChannelSelectionDialog() {
