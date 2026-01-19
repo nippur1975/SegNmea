@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">Acerca de</string>
+    <string name="about_message">"Programa de seguimiento de barcos\n\nRealizado por: Hdelacruz\nEmail: hugo_delacruz@hotmail.com"</string>
+    <string name="about_title">Acerca De</string>
+    <string name="app_name">Lalito</string>
+    <string name="channel">Canal</string>
+    <string name="channel_select">Selección Canal</string>
+    <string name="channel_setting">Configuración Canal</string>
+    <string name="clinometer">Clinómetro</string>
+    <string name="compass">Compás</string>
+    <string name="data">Datos</string>
+    <string name="heading">Rumbo</string>
+    <string name="language">Idioma</string>
+    <string name="language_select">Selección Idioma</string>
+    <string name="lat">Lat</string>
+    <string name="lon">Lon</string>
+    <string name="pitch">Inclinacion</string>
+    <string name="pitch_alarm_threshold">Umbral de Alarma de Inclinación</string>
+    <string name="principal">Principal</string>
+    <string name="roll">Balanceo</string>
+    <string name="roll_alarm_threshold">Umbral de Alarma de Balanceo</string>
+    <string name="ruler">Regla</string>
+    <string name="save">Guardar</string>
+    <string name="settings">Ajustes</string>
+    <string name="settings_alarms">Configuración Alarma</string>
+    <string name="speed">Veloc.</string>
+    <string name="track">Rastro</string>
+</resources>
