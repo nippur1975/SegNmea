@@ -23,4 +23,23 @@
         android:layout_height="wrap_content"
         android:text="@string/settings_alarms" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ThingSpeak Write API Key"
+        android:paddingTop="20dp"/>
+
+    <EditText
+        android:id="@+id/apiKeyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Write API Key"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/saveApiKeyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save API Key" />
+
 </LinearLayout>
