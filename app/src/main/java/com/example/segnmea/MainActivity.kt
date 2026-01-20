@@ -2,6 +2,9 @@ package com.example.segnmea
 
 import android.content.Context
 import android.content.Intent
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
@@ -10,10 +13,14 @@ import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
 import com.example.segnmea.databinding.ActivityMainBinding
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -57,6 +64,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var channelName = "Vessel"
     private val refreshInterval = 15000L // 15 segundos
 
+    // Bluetooth & Data
+    private var bluetoothService: BluetoothService? = null
+    private val nmeaParser = NmeaParser()
+    private lateinit var trackManager: TrackManager
+    private var lastUploadTime = 0L
+    private val uploadInterval = 15000L // 15s throttle for ThingSpeak
+    private var writeApiKey = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -66,6 +81,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         currentChannel = sharedPreferences.getString("current_channel", "3002133") ?: "3002133"
         channelName = sharedPreferences.getString("current_channel_name", "Vessel") ?: "Vessel"
+        writeApiKey = sharedPreferences.getString("thingspeak_write_key", "") ?: ""
+
+        trackManager = TrackManager(this)
+        bluetoothService = BluetoothService { line ->
+            runOnUiThread { onNmeaData(line) }
+        }
 
         // IMPORTANT: Replace "YOUR_MAP_ID" with your actual Map ID
         val mapOptions = GoogleMapOptions().mapId("YOUR_MAP_ID")
@@ -128,6 +149,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.trackSwitch.isChecked = false
         trackPolylines.values.forEach { it.isVisible = true }
         historicalMarkers.forEach { it.isVisible = false }
+
+        // Load local daily track
+        val localPoints = trackManager.loadPoints()
+        if (localPoints.isNotEmpty()) {
+             val options = PolylineOptions().width(7f).color(0xFF00AA00.toInt()) // Green
+             localPoints.forEach { options.add(it.getPosition()) }
+             map.addPolyline(options)
+        }
 
         map.setOnMarkerClickListener { marker ->
             val trackPoint = markerToTrackPointMap[marker]
@@ -418,6 +447,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 startActivity(Intent(this, LanguageActivity::class.java))
                 true
             }
+            R.id.action_connect_bluetooth -> {
+                showBluetoothDeviceDialog()
+                true
+            }
+            R.id.action_api_key -> {
+                showApiKeyDialog()
+                true
+            }
             R.id.action_about -> {
                 val aboutDialog = AlertDialog.Builder(this)
                     .setTitle(getString(R.string.about_title))
@@ -434,6 +471,163 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         stopRepeatingTask()
+        bluetoothService?.cancel()
+    }
+
+    private fun showApiKeyDialog() {
+        val input = EditText(this)
+        input.hint = "API Write Key"
+        input.setText(writeApiKey)
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.api_key_setting))
+            .setView(input)
+            .setPositiveButton("Save") { _, _ ->
+                writeApiKey = input.text.toString().trim()
+                getSharedPreferences("Settings", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("thingspeak_write_key", writeApiKey)
+                    .apply()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showBluetoothDeviceDialog() {
+        if (checkBluetoothPermissions()) {
+            val adapter = BluetoothAdapter.getDefaultAdapter()
+            if (adapter == null) {
+                Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show()
+                return
+            }
+            if (!adapter.isEnabled) {
+                Toast.makeText(this, "Please enable Bluetooth", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val pairedDevices = adapter.bondedDevices
+            val deviceList = pairedDevices.toList()
+            val deviceNames = deviceList.map { "${it.name} (${it.address})" }.toTypedArray()
+
+            AlertDialog.Builder(this)
+                .setTitle("Select Device")
+                .setItems(deviceNames) { _, which ->
+                    bluetoothService?.connect(deviceList[which])
+                    Toast.makeText(this, "Connecting to ${deviceList[which].name}...", Toast.LENGTH_SHORT).show()
+                }
+                .show()
+        }
+    }
+
+    private fun checkBluetoothPermissions(): Boolean {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(
+                    android.Manifest.permission.BLUETOOTH_CONNECT,
+                    android.Manifest.permission.BLUETOOTH_SCAN
+                ), 1001)
+                return false
+            }
+        } else {
+             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
+                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                 ActivityCompat.requestPermissions(this, arrayOf(
+                     android.Manifest.permission.BLUETOOTH,
+                     android.Manifest.permission.ACCESS_FINE_LOCATION
+                 ), 1001)
+                 return false
+             }
+        }
+        return true
+    }
+
+    private fun onNmeaData(line: String) {
+        val data = nmeaParser.parse(line)
+
+        // Only proceed if we have valid data (e.g., speed or position)
+        // Note: NMEA sentences come one by one. RMC gives pos/speed, XDR gives pitch/roll.
+        // The parser object accumulates state. So we can update UI with current state.
+
+        // Update UI
+        updateUI(
+            data.latitude?.toString() ?: "0",
+            data.longitude?.toString() ?: "0",
+            data.speed?.toString() ?: "0",
+            data.heading?.toString() ?: "0",
+            data.pitch?.toString() ?: "0",
+            data.roll?.toString() ?: "0"
+        )
+
+        // Update Map Marker
+        if (data.latitude != null && data.longitude != null && data.latitude != 0.0 && data.longitude != 0.0) {
+            val pos = LatLng(data.latitude!!, data.longitude!!)
+            val heading = data.heading?.toFloat() ?: 0f
+
+            // Re-use logic for boat marker
+            val iconResId = R.drawable.ic_navigation // Default
+            val iconColor = channelColors[0] // Default color for self
+            val bitmap = getBitmap(iconResId, iconColor)
+
+            if (boatMarker == null) {
+                boatMarker = map.addMarker(
+                    MarkerOptions()
+                        .position(pos)
+                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+                        .rotation(heading)
+                        .anchor(0.5f, 0.5f)
+                )
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+            } else {
+                boatMarker?.position = pos
+                boatMarker?.rotation = heading
+            }
+
+            // Save Track Point
+             val tp = TrackPoint(
+                data.latitude!!, data.longitude!!,
+                data.pitch?.toString() ?: "0",
+                data.roll?.toString() ?: "0",
+                data.speed?.toString() ?: "0",
+                data.heading?.toString() ?: "0",
+                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+            )
+            trackManager.savePoint(tp)
+
+            // Add to polyline locally (visual feedback)
+            // Note: trackPolyline is for fetched data, we might want a "localTrackPolyline"
+            // For now, we can try to append to trackPolyline if it's the current channel or create a new one.
+            // Simplified: Just upload. The fetch loop will likely bring it back if we are viewing our own channel.
+            // But user wants local track.
+        }
+
+        // Upload to ThingSpeak
+        val now = System.currentTimeMillis()
+        if (now - lastUploadTime >= uploadInterval && writeApiKey.isNotEmpty()) {
+            uploadToThingSpeak(data)
+            lastUploadTime = now
+        }
+    }
+
+    private fun uploadToThingSpeak(data: BoatData) {
+        // url: https://api.thingspeak.com/update?api_key=KEY&field1=...
+        val baseUrl = "https://api.thingspeak.com/update"
+        val url = "$baseUrl?api_key=$writeApiKey" +
+                "&field1=${data.pitch ?: 0}" +
+                "&field2=${data.roll ?: 0}" +
+                "&field3=${data.latitude ?: 0}" +
+                "&field4=${data.longitude ?: 0}" +
+                "&field5=${data.speed ?: 0}" +
+                "&field6=${data.heading ?: 0}"
+
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            { response ->
+                // Log.d("Upload", "Success: $response")
+            },
+            { error ->
+                // Log.e("Upload", "Error: $error")
+            })
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
     }
 
     private fun showChannelSelectionDialog() {

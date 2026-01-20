@@ -32,4 +32,6 @@
     <string name="track">Track</string>
     <string name="ruler">Ruler</string>
     <string name="about_message">"Boat tracking program\n\nMade by: Hdelacruz\nEmail: hugo_delacruz@hotmail.com"</string>
+    <string name="connect_bluetooth">Connect Bluetooth</string>
+    <string name="api_key_setting">ThingSpeak Write Key</string>
 </resources>

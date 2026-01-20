@@ -19,6 +19,14 @@
         android:title="@string/language_select"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_connect_bluetooth"
+        android:title="@string/connect_bluetooth"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_api_key"
+        android:title="@string/api_key_setting"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about"
         android:title="@string/about_title"
         app:showAsAction="never" />
