@@ -32,4 +32,12 @@
     <string name="track">Track</string>
     <string name="ruler">Ruler</string>
     <string name="about_message">"Boat tracking program\n\nMade by: Hdelacruz\nEmail: hugo_delacruz@hotmail.com"</string>
+
+    <string name="action_connect_bluetooth">Conectar Bluetooth</string>
+    <string name="bluetooth_connected">Bluetooth Conectado</string>
+    <string name="bluetooth_disconnected">Bluetooth Desconectado</string>
+    <string name="bluetooth_error">Error de Bluetooth</string>
+    <string name="select_device">Seleccionar Dispositivo</string>
+    <string name="thingspeak_write_key">ThingSpeak Write Key</string>
+    <string name="pref_thingspeak_write_key">thingspeak_write_key</string>
 </resources>

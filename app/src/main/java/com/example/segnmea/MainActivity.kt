@@ -2,6 +2,7 @@ package com.example.segnmea
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
@@ -10,17 +11,20 @@ import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import android.Manifest
+import android.os.Build
 import com.example.segnmea.databinding.ActivityMainBinding
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -29,6 +33,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import org.json.JSONObject
 import androidx.collection.LruCache
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -57,15 +62,56 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var channelName = "Vessel"
     private val refreshInterval = 15000L // 15 segundos
 
+    // New Bluetooth & Tracking components
+    private lateinit var bluetoothManager: BluetoothManager
+    private lateinit var nmeaParser: NmeaParser
+    private lateinit var trackManager: TrackManager
+    private lateinit var thingSpeakUploader: ThingSpeakUploader
+    private var isBluetoothConnected = false
+    private lateinit var sharedPreferences: SharedPreferences
+
+    private val requestBluetoothPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        val granted = permissions.entries.all { it.value }
+        if (granted) {
+            showBluetoothDialog()
+        } else {
+            Toast.makeText(this, "Bluetooth permissions required", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = getString(R.string.app_name)
 
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         currentChannel = sharedPreferences.getString("current_channel", "3002133") ?: "3002133"
         channelName = sharedPreferences.getString("current_channel_name", "Vessel") ?: "Vessel"
+
+        // Init Managers
+        nmeaParser = NmeaParser()
+        trackManager = TrackManager(this)
+        thingSpeakUploader = ThingSpeakUploader(this)
+        bluetoothManager = BluetoothManager(this, object : BluetoothListener {
+            override fun onStatusChange(status: String) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, status, Toast.LENGTH_SHORT).show()
+                    if (status == "Connected") isBluetoothConnected = true
+                    if (status == "Disconnected") isBluetoothConnected = false
+                }
+            }
+
+            override fun onDataReceived(line: String) {
+                processBluetoothData(line)
+            }
+
+            override fun onError(error: String) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
         // IMPORTANT: Replace "YOUR_MAP_ID" with your actual Map ID
         val mapOptions = GoogleMapOptions().mapId("YOUR_MAP_ID")
@@ -110,6 +156,75 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         startRepeatingTask()
+    }
+
+    private fun processBluetoothData(line: String) {
+        val data = nmeaParser.parse(line)
+        if (data.lat != 0.0 && data.lon != 0.0) {
+            val tp = TrackPoint(
+                data.lat,
+                data.lon,
+                data.pitch.toString(),
+                data.roll.toString(),
+                data.speed.toString(),
+                data.heading.toString(),
+                data.timestamp.ifEmpty { java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date()) }
+            )
+
+            // Save to local track
+            trackManager.addPoint(tp)
+
+            // Upload to ThingSpeak
+            val apiKey = sharedPreferences.getString("thingspeak_write_key", "") ?: ""
+            if (apiKey.isNotEmpty()) {
+                thingSpeakUploader.upload(apiKey, tp)
+            }
+
+            runOnUiThread {
+                updateUI(tp.lat.toString(), tp.lon.toString(), tp.speed, tp.heading, tp.pitch, tp.roll)
+                updateMapWithLocalPosition(tp)
+            }
+        }
+    }
+
+    private fun updateMapWithLocalPosition(tp: TrackPoint) {
+        if (!::map.isInitialized) return
+
+        val pos = tp.getPosition()
+
+        val heading = tp.heading.toFloatOrNull() ?: 0f
+        val speed = tp.speed.toDoubleOrNull()
+
+        val iconResId: Int = if (speed != null && speed > 2) R.drawable.ic_navigation else R.drawable.ic_square_rotated
+        val iconColor: Int = 0xFF00FF00.toInt() // Green for local boat
+
+        val bitmap = getBitmap(iconResId, iconColor)
+
+        if (boatMarker == null) {
+            boatMarker = map.addMarker(
+                MarkerOptions()
+                    .position(pos)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+                    .rotation(heading)
+                    .anchor(0.5f, 0.5f)
+                    .title("My Boat")
+            )
+            boatMarker?.tag = bitmap
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+        } else {
+            boatMarker?.position = pos
+            boatMarker?.rotation = heading
+            boatMarker?.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+        }
+
+        // Draw Track
+        val polyPoints = trackManager.getPolylinePoints()
+
+        if (!trackPolylines.containsKey("local")) {
+            val poly = map.addPolyline(PolylineOptions().width(5f).color(0xFF00FF00.toInt()))
+            trackPolylines["local"] = poly
+        }
+        trackPolylines["local"]?.points = polyPoints
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -167,6 +282,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        // Load local track initially
+        val localPoints = trackManager.getPolylinePoints()
+        if (localPoints.isNotEmpty()) {
+             if (!trackPolylines.containsKey("local")) {
+                val poly = map.addPolyline(PolylineOptions().width(5f).color(0xFF00FF00.toInt()))
+                trackPolylines["local"] = poly
+            }
+            trackPolylines["local"]?.points = localPoints
+        }
     }
 
     private val updateTask = object : Runnable {
@@ -211,7 +336,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         try {
             val jsonObject = JSONObject(response)
             val channelObject = jsonObject.getJSONObject("channel")
-            val channelName = channelObject.getString("name")
+            val channelNameVal = channelObject.getString("name")
             val feeds = jsonObject.getJSONArray("feeds")
 
             val points = mutableListOf<LatLng>()
@@ -280,8 +405,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val longitude = lon.toDoubleOrNull() ?: 0.0
                 val position = LatLng(latitude, longitude)
 
-                if (channelId == currentChannel) {
-                    this@MainActivity.channelName = channelName
+                if (channelId == currentChannel && !isBluetoothConnected) {
+                    this@MainActivity.channelName = channelNameVal
                     updateUI(lat, lon, speed, heading, pitch, roll)
                 }
 
@@ -344,11 +469,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val speedAbs = speed.toDoubleOrNull()?.let { Math.abs(it).toInt() }?.toString() ?: speed
 
         // Obtener la configuración de idioma
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val language = sharedPreferences.getString("language", "en") ?: "en"
 
         // Orden correcto en pantalla
-        binding.channelNameTextView.text = channelName
+        binding.channelNameTextView.text = if (isBluetoothConnected) "Bluetooth Source" else channelName
         if (language == "es") {
             binding.latTextView.text = "${getString(R.string.lat_es)} : $latFormatted"
             binding.lonTextView.text = "${getString(R.string.lon_es)} : $lonFormatted"
@@ -402,6 +526,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_connect_bluetooth -> {
+                checkAndConnectBluetooth()
+                true
+            }
+            R.id.action_set_api_key -> {
+                showApiKeyDialog()
+                true
+            }
             R.id.action_alarm_settings -> {
                 startActivity(Intent(this, AlarmActivity::class.java))
                 true
@@ -434,10 +566,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         stopRepeatingTask()
+        if (::bluetoothManager.isInitialized) {
+            bluetoothManager.disconnect()
+        }
     }
 
     private fun showChannelSelectionDialog() {
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val channels = mutableListOf<String>()
         for (i in 1..8) {
             val channel = sharedPreferences.getString("channel$i", "")
@@ -468,6 +602,55 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         builder.setNegativeButton("Cancelar", null)
         builder.create().show()
+    }
+
+    private fun checkAndConnectBluetooth() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+
+                requestBluetoothPermissions.launch(arrayOf(
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.BLUETOOTH_SCAN
+                ))
+                return
+            }
+        }
+        showBluetoothDialog()
+    }
+
+    private fun showBluetoothDialog() {
+        val devices = bluetoothManager.getPairedDevices()
+        if (devices.isNullOrEmpty()) {
+            Toast.makeText(this, "No devices found", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val deviceList = devices.toList()
+        val deviceNames = deviceList.map { "${it.name} (${it.address})" }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.select_device))
+            .setItems(deviceNames) { _, which ->
+                val device = deviceList[which]
+                bluetoothManager.connect(device.address)
+            }
+            .show()
+    }
+
+    private fun showApiKeyDialog() {
+        val input = EditText(this)
+        input.hint = "API Key"
+        input.setText(sharedPreferences.getString("thingspeak_write_key", ""))
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.thingspeak_write_key))
+            .setView(input)
+            .setPositiveButton("Save") { _, _ ->
+                sharedPreferences.edit().putString("thingspeak_write_key", input.text.toString()).apply()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun addRulerPoint(latLng: LatLng) {
