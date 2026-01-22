@@ -11,6 +11,10 @@
         android:title="@string/channel_setting"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_connect_bluetooth"
+        android:title="Connect Bluetooth"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_select_channel"
         android:title="@string/channel_select"
         app:showAsAction="never" />
