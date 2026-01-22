@@ -11,8 +11,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.segnmea.databinding.ActivityMainBinding
 import com.google.android.gms.maps.GoogleMapOptions
@@ -57,15 +62,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var channelName = "Vessel"
     private val refreshInterval = 15000L // 15 segundos
 
+    // New Components
+    private var bluetoothService: BluetoothService? = null
+    private val nmeaParser = NmeaParser()
+    private lateinit var trackManager: TrackManager
+    private lateinit var thingSpeakUploader: ThingSpeakUploader
+    private var writeApiKey = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = getString(R.string.app_name)
 
+        // Initialize helpers
+        trackManager = TrackManager(this)
+        thingSpeakUploader = ThingSpeakUploader(this)
+
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         currentChannel = sharedPreferences.getString("current_channel", "3002133") ?: "3002133"
         channelName = sharedPreferences.getString("current_channel_name", "Vessel") ?: "Vessel"
+        writeApiKey = sharedPreferences.getString("write_api_key", "") ?: ""
 
         // IMPORTANT: Replace "YOUR_MAP_ID" with your actual Map ID
         val mapOptions = GoogleMapOptions().mapId("YOUR_MAP_ID")
@@ -109,7 +126,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        checkBluetoothPermissions()
         startRepeatingTask()
+    }
+
+    private fun checkBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val permissions = arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            val needed = permissions.filter {
+                ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+            }
+            if (needed.isNotEmpty()) {
+                requestPermissionLauncher.launch(needed.toTypedArray())
+            }
+        } else {
+            val permissions = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            val needed = permissions.filter {
+                ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+            }
+            if (needed.isNotEmpty()) {
+                requestPermissionLauncher.launch(needed.toTypedArray())
+            }
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        permissions.entries.forEach {
+            if (!it.value) {
+                Toast.makeText(this, "Permiso denegado: ${it.key}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -184,6 +239,105 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun stopRepeatingTask() {
         handler.removeCallbacks(updateTask)
+        bluetoothService?.stop()
+    }
+
+    private fun showBluetoothDevicesDialog() {
+        bluetoothService = BluetoothService(handler) { data ->
+            runOnUiThread {
+                processNmeaData(data)
+            }
+        }
+
+        val devices = bluetoothService?.getPairedDevices()?.toList() ?: emptyList()
+        if (devices.isEmpty()) {
+            Toast.makeText(this, "No paired devices found", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val deviceNames = devices.map { "${it.name} (${it.address})" }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("Connect Bluetooth")
+            .setItems(deviceNames) { _, which ->
+                val device = devices[which]
+                Toast.makeText(this, "Connecting to ${device.name}...", Toast.LENGTH_SHORT).show()
+                bluetoothService?.connect(device)
+            }
+            .show()
+    }
+
+    private fun processNmeaData(raw: String) {
+        val nmeaData = nmeaParser.parse(raw) ?: return
+
+        if (nmeaData.hasValidPosition) {
+            val latStr = nmeaData.lat.toString()
+            val lonStr = nmeaData.lon.toString()
+            val speedStr = nmeaData.speed.toString()
+            val headingStr = nmeaData.heading.toString()
+            val pitchStr = nmeaData.pitch.toString()
+            val rollStr = nmeaData.roll.toString()
+
+            // 1. Update UI
+            updateUI(latStr, lonStr, speedStr, headingStr, pitchStr, rollStr)
+
+            // 2. Save to local track
+            val trackPoint = TrackPoint(
+                nmeaData.lat,
+                nmeaData.lon,
+                pitchStr,
+                rollStr,
+                speedStr,
+                headingStr,
+                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+            )
+            trackManager.savePoint(trackPoint)
+
+            // 3. Update Map Position (Local Boat)
+            updateLocalBoatMarker(nmeaData)
+
+            // 4. Upload to ThingSpeak
+            if (writeApiKey.isNotEmpty()) {
+                thingSpeakUploader.uploadData(
+                    writeApiKey,
+                    nmeaData.lat,
+                    nmeaData.lon,
+                    nmeaData.speed,
+                    nmeaData.heading,
+                    nmeaData.pitch,
+                    nmeaData.roll
+                )
+            }
+        }
+    }
+
+    private fun updateLocalBoatMarker(data: NmeaData) {
+        val position = LatLng(data.lat, data.lon)
+        val rotation = data.heading.toFloat()
+
+        // We use a special key for local boat, e.g., "LOCAL"
+        val boatMarker = boatMarkers["LOCAL"]
+        val bitmap = getBitmap(R.drawable.ic_navigation, 0xFF00FF00.toInt()) // Green for local
+
+        if (boatMarker == null) {
+            val newBoatMarker = map.addMarker(
+                MarkerOptions()
+                    .position(position)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+                    .rotation(rotation)
+                    .anchor(0.5f, 0.5f)
+                    .title("My Boat")
+            )
+            if (newBoatMarker != null) {
+                newBoatMarker.tag = bitmap
+                boatMarkers["LOCAL"] = newBoatMarker
+            }
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17f))
+        } else {
+            boatMarker.position = position
+            boatMarker.rotation = rotation
+            boatMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+        }
     }
 
     private fun fetchChannelData(channelId: String) {
@@ -408,6 +562,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             R.id.action_channel_settings -> {
                 startActivity(Intent(this, ChannelActivity::class.java))
+                true
+            }
+            R.id.action_connect_bluetooth -> {
+                showBluetoothDevicesDialog()
                 true
             }
             R.id.action_select_channel -> {
