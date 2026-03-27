@@ -1,9 +1,9 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.segnmea.databinding.ActivitySettingsBinding
+import com.example.tracking_app.databinding.ActivitySettingsBinding
 
 /**
  * Activity that displays the settings screen.

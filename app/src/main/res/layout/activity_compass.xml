@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Rosa circular centrada -->
-    <com.example.segnmea.CompassView
+    <com.example.tracking_app.CompassView
         android:id="@+id/compassRose"
         android:layout_width="400dp"
         android:layout_height="400dp"

@@ -1,11 +1,11 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import com.example.segnmea.databinding.ActivityLanguageBinding
+import com.example.tracking_app.databinding.ActivityLanguageBinding
 import java.util.*
 
 class LanguageActivity : AppCompatActivity() {

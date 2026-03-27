@@ -1,8 +1,8 @@
-package com.example.segnmea
+package com.example.tracking_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.segnmea.databinding.ActivityAboutBinding
+import com.example.tracking_app.databinding.ActivityAboutBinding
 
 class AboutActivity : AppCompatActivity() {
 
